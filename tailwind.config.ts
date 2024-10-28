@@ -24,6 +24,16 @@ const config: Config = {
           colors: {
             primary: {
               DEFAULT: '#F31260',
+              '50': '#fff0f3',
+              '100': '#ffe2e8',
+              '200': '#ffc9d7',
+              '300': '#ff9cb6',
+              '400': '#ff6591',
+              '500': '#ff306e',
+              '600': '#f31260',
+              '700': '#cd034e',
+              '800': '#ab0649',
+              '900': '#520020',
               foreground: '#FFFFFF',
             },
           },
