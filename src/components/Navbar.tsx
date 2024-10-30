@@ -37,7 +37,7 @@ const NavBar = () => {
   const userSession = {
     email: 'zoe.smith@example.com',
     name: 'Zoe Smith',
-  }
+  };
 
   const isLogged = userSession !== null;
 
@@ -87,13 +87,11 @@ const NavBar = () => {
                 <p className="font-semibold">{userSession.name}</p>
               </DropdownItem>
               <DropdownSection title="Settings">
-                {
-                  NAVBAR_DROPDOWN_SETTINGS.map(({ name, href }) => (
-                    <DropdownItem key={name} onClick={() => router.push(href)}>
-                      {name}
-                    </DropdownItem>
-                  ))
-                }
+                {NAVBAR_DROPDOWN_SETTINGS.map(({ name, href }) => (
+                  <DropdownItem key={name} onClick={() => router.push(href)}>
+                    {name}
+                  </DropdownItem>
+                ))}
               </DropdownSection>
               <DropdownSection title="Account">
                 <DropdownItem key="logout" color="danger">
