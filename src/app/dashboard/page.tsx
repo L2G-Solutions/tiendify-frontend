@@ -1,6 +1,6 @@
 'use client';
 
-import { getShopInfo } from '@/service/management';
+import { getShopInfo } from '@/service/shops';
 import { Button, Card, CardBody, CardFooter, CardHeader, Chip, Divider, Image, Link } from '@nextui-org/react';
 import { IconChecks, IconMailFilled, IconPointFilled } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
