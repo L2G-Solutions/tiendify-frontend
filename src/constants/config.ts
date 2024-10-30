@@ -34,3 +34,36 @@ export const SHOP_LANGUAGES = [
   { key: 'fr', label: 'French' },
   { key: 'pt', label: 'Portuguese' },
 ];
+
+export const PROVISION_STEPS = [
+  {
+    title: 'Creating Resource Group',
+    description:
+      'We’re setting up a dedicated space for all the resources your store will need. This step ensures that everything your store requires is organized and securely contained within its own resource group',
+    illustrationPath: '/illustrations/server-provisioning-step-1.svg',
+  },
+  {
+    title: 'Setting Up Web App',
+    description:
+      'Next, we’re configuring the core web app. This forms the foundation of your store’s functionality, managing all of the operations behind the scenes to keep everything running smoothly.',
+    illustrationPath: '/illustrations/server-provisioning-step-2.svg',
+  },
+  {
+    title: 'Configuring Cloud Storage',
+    description:
+      'Now we’re creating a secure storage solution for your store’s media and data files, such as images, documents, and backups. This helps to ensure fast and reliable access to your files.',
+    illustrationPath: '/illustrations/server-provisioning-step-3.svg',
+  },
+  {
+    title: 'Setting Up the Database',
+    description:
+      'We’re initializing the main database where all of your store’s important data will be stored, including product details, customer information, and order history. This ensures your store’s data is structured and easily accessible.',
+    illustrationPath: '/illustrations/server-provisioning-step-4.svg',
+  },
+  {
+    title: 'Provisioning IAM (Identity and Access Management)',
+    description:
+      'Lastly, we’re setting up Identity and Access Management to protect your store’s resources. This allows us to control who has access to each resource, adding a strong layer of security.',
+    illustrationPath: '/illustrations/server-provisioning-step-5.svg',
+  },
+];
