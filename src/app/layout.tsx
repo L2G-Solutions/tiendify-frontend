@@ -22,9 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased flex flex-col min-h-screen`}>
+      <body className={`${inter.className} antialiased flex flex-col min-h-screen overflow-x-hidden`}>
         <NavBar />
-        <Providers>{children}</Providers>
+        <Providers>
+          <main className="py-20">{children}</main>
+        </Providers>
         <Footer />
       </body>
     </html>
