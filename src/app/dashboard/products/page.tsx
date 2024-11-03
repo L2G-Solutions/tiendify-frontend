@@ -1,5 +1,6 @@
 'use client';
 import ProductCard from '@/components/dashboard/products/ProductCard';
+import ProductsFilterMenu from '@/components/dashboard/products/ProductsFilterMenu';
 import { getShopProducts } from '@/service/shops';
 import { Button, CircularProgress, Input, Pagination, Tooltip } from '@nextui-org/react';
 import { IconLayoutList, IconLayoutGrid, IconPlus, IconSearch } from '@tabler/icons-react';
@@ -40,6 +41,9 @@ const DashboardProductsPage = () => {
             <Input placeholder="Search products by code or name" startContent={<IconSearch size={16} />} />
           </div>
           <ul className="flex gap-2">
+            <li>
+              <ProductsFilterMenu />
+            </li>
             <li>
               <Tooltip content={isGridLayout ? 'Switch to list view' : 'Switch to grid view'} placement="top">
                 <Button
