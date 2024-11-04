@@ -44,7 +44,7 @@ const ProductCard = ({ product, cardType, href }: IProductCardProps) => {
         </main>
       </Link>
       <footer className="absolute top-2 right-2">
-        <ProductActionMenu />
+        <ProductActionMenu isProductHidden={product.isHidden ?? false} />
       </footer>
     </article>
   );

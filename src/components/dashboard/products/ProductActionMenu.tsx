@@ -1,6 +1,10 @@
 'use client';
 import { Button, Dropdown, DropdownSection, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
-import { IconCopy, IconDotsVertical, IconEyeClosed, IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconCopy, IconDotsVertical, IconEye, IconEyeClosed, IconPencil, IconTrash } from '@tabler/icons-react';
+
+interface IProductActionMenuProps {
+  isProductHidden: boolean;
+}
 
 const ProductActionMenu = () => {
   return (
@@ -15,6 +19,14 @@ const ProductActionMenu = () => {
           </DropdownItem>
           <DropdownItem key="duplicate" startContent={<IconCopy size={16} />}>
             Duplicate
+          </DropdownItem>
+          <DropdownItem
+            key="hide"
+            color="warning"
+            startContent={isProductHidden ? <IconEye size={16} /> : <IconEyeClosed size={16} />}
+            onClick={handleProductVisibilityChange}
+          >
+            {isProductHidden ? 'Unhide' : 'Hide'} for customers
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Danger Zone">

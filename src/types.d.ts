@@ -7,5 +7,6 @@ type TProduct = {
   mediaFiles: string[];
   stock: number;
   categories: string[];
+  isHidden: boolean;
   createdAt: string;
 };

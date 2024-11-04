@@ -40,6 +40,7 @@ export const getShopProducts = async (
         'https://picfiles.alphacoders.com/364/364333.jpg',
       ],
       categories: ['clothing', 'woman', 'shoes'],
+      isHidden: true,
     },
     {
       id: 'TP32313',
@@ -55,6 +56,7 @@ export const getShopProducts = async (
         'https://picfiles.alphacoders.com/430/430511.jpg',
       ],
       categories: ['clothing', 'men', 't-shirt'],
+      isHidden: false,
     },
     {
       id: 'TP32314',
@@ -70,6 +72,7 @@ export const getShopProducts = async (
         'https://images2.alphacoders.com/551/551806.jpg',
       ],
       categories: ['clothing', 'woman', 'blouse'],
+      isHidden: false,
     },
   ];
   console.log('Fetching products...', page, size);
