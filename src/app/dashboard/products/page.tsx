@@ -15,6 +15,7 @@ const DashboardProductsPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = isNaN(Number(searchParams.get('page'))) ? 1 : Number(searchParams.get('page'));
+  const search = searchParams.get('search') || '';
 
   const {
     data: { products = [], total = 0 } = {},
@@ -40,9 +41,17 @@ const DashboardProductsPage = () => {
       <header className="flex flex-col gap-2">
         <h1 className="mb-2">Products</h1>
         <div className="flex justify-between items-center gap-4">
-          <div className="flex-1">
-            <Input placeholder="Search products by code or name" startContent={<IconSearch size={16} />} />
-          </div>
+          <form className="flex-1 inline-flex gap-2" action="">
+            <Input
+              placeholder="Search products by code or name"
+              name="search"
+              maxLength={100}
+              startContent={<IconSearch size={16} />}
+            />
+            <Button type="submit" color="default" variant="flat">
+              Search
+            </Button>
+          </form>
           <ul className="flex gap-2">
             <li>
               <ProductsFilterMenu />
@@ -63,6 +72,12 @@ const DashboardProductsPage = () => {
             Add product
           </Button>
         </div>
+        {search && (
+          <div className="inline-flex gap-2 text-default-500">
+            <p>Search results for </p>
+            <p className="font-semibold">&quot;{search}&quot;</p>
+          </div>
+        )}
       </header>
       <main>
         {isSuccess && (
@@ -104,7 +119,7 @@ const DashboardProductsPage = () => {
             boundaries={1}
             siblings={2}
             onChange={(page) => {
-              router.push(`/dashboard/products?page=${page}`);
+              router.push(`/dashboard/products?${search && `search=${search}&`}page=${page}`);
             }}
           />
         )}
