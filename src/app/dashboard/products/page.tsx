@@ -68,11 +68,20 @@ const DashboardProductsPage = () => {
               isGridLayout && 'sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
             )}
           >
-            {products.map((product) => (
-              <li key={product.id}>
-                <ProductCard product={product} cardType={isGridLayout ? 'grid' : 'list'} />
-              </li>
-            ))}
+            {!products.length ? (
+              <div className="flex flex-col items-center gap-4">
+                <p>No products found.</p>
+                <Button color="primary" startContent={<IconPlus size={16} />}>
+                  Add product
+                </Button>
+              </div>
+            ) : (
+              products.map((product) => (
+                <li key={product.id}>
+                  <ProductCard product={product} cardType={isGridLayout ? 'grid' : 'list'} />
+                </li>
+              ))
+            )}
           </ul>
         )}
         {isLoading && (
@@ -83,7 +92,7 @@ const DashboardProductsPage = () => {
         )}
       </main>
       <footer className="flex justify-center">
-        {isSuccess && (
+        {isSuccess && products.length !== 0 && (
           <Pagination
             total={total % PAGE_SIZE === 0 ? total / PAGE_SIZE : Math.floor(total / PAGE_SIZE) + 1}
             initialPage={page}
