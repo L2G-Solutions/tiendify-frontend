@@ -274,3 +274,39 @@ export const duplicateProduct = async ({ productId }: duplicateProductPayload): 
     }, 1500);
   });
 };
+
+export const getProductCategories = async (): Promise<TProductCategory[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        {
+          id: 'TPC123',
+          name: 'Clothing',
+          description: 'Clothing category',
+        },
+        {
+          id: 'TPC124',
+          name: 'Shoes',
+          description: 'Shoes category',
+        },
+        {
+          id: 'TPC125',
+          name: 'T-shirt',
+          description: 'T-shirt category',
+        },
+      ]);
+    }, 1500);
+  });
+};
+
+export const createProductCategory = async ({ category }: createProductCategoryPayload): Promise<TProductCategory> => {
+  console.log('Creating category...', category);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        id: 'TPC126',
+        ...category,
+      });
+    }, 1500);
+  });
+};

@@ -32,3 +32,7 @@ type toggleProductVisibilityPayload = {
 type duplicateProductPayload = {
   productId: string;
 };
+
+type createProductCategoryPayload = {
+  category: Omit<TProductCategory, 'id'>;
+};
