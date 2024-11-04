@@ -1,12 +1,5 @@
 'use client';
-import {
-  Button,
-  Dropdown,
-  DropdownSection,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from '@nextui-org/react';
+import { Button, Dropdown, DropdownSection, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import { IconFilter } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Selection } from '@nextui-org/react';
@@ -17,14 +10,14 @@ const ProductsFilterMenu = () => {
   return (
     <Dropdown className="shadow-xl" placement="bottom">
       <DropdownTrigger>
-          <Button color="default" variant="flat" isIconOnly startContent={<IconFilter size={16} />} />
+        <Button color="default" variant="flat" isIconOnly startContent={<IconFilter size={16} />} />
       </DropdownTrigger>
       <DropdownMenu
         closeOnSelect
         aria-label="Filters"
         color="default"
         variant="flat"
-        selectionMode="multiple"
+        selectionMode="single"
         selectedKeys={selectedKeys}
         onSelectionChange={(keys) => setSelectedKeys(keys.currentKey === 'clear' ? new Set() : keys)}
       >
