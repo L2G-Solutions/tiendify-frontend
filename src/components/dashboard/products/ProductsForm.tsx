@@ -24,7 +24,8 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
     queryKey: 'product-categories',
   });
 
-  const [isPublicProduct, setIsPublicProduct] = useState<boolean>(product?.isHidden ?? false);
+  const defaultProductVisibility = product?.isHidden ?? false;
+  const [isPublicProduct, setIsPublicProduct] = useState<boolean>(!defaultProductVisibility);
   const [selectedCategories, setSelectedCategories] = useState<TProductCategory[]>(
     product?.categories ? product.categories : []
   );
@@ -44,12 +45,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
 
   const handleSubmit: FormEventHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Form: ', productForm.current);
-
     const formData = new FormData(productForm.current ?? undefined);
-    console.log('Form Data', formData);
-
-    console.log('Is public: ', isPublicProduct);
 
     if (
       validateFiles({
@@ -99,7 +95,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
           type="switch"
           name="isHidden"
           color="success"
-          checked={isPublicProduct}
+          isSelected={isPublicProduct}
           onChange={() => setIsPublicProduct(!isPublicProduct)}
         >
           Public for customers
