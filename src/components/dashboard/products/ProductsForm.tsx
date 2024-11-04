@@ -2,7 +2,7 @@
 import { getProductCategories } from '@/service/products';
 import { validateFiles } from '@/utils/validation';
 import { Select, SelectItem, Button, Chip, Input, Textarea, SelectedItems, Selection, Switch } from '@nextui-org/react';
-import { IconCategory2, IconPhotoSpark, IconSparkles, IconStack, IconWriting } from '@tabler/icons-react';
+import { IconCategory2, IconChecks, IconPhotoSpark, IconSparkles, IconStack, IconWriting } from '@tabler/icons-react';
 import { FormEvent, FormEventHandler, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -196,8 +196,8 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
         <Button color="default" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button type="submit" color="primary">
-          Submit
+        <Button type="submit" color="primary" startContent={<IconChecks size={16} />}>
+          Save changes
         </Button>
       </div>
     </form>
