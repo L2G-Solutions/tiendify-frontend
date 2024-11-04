@@ -4,7 +4,6 @@ import ProductsFilterMenu from '@/components/dashboard/products/ProductsFilterMe
 import { getShopProducts } from '@/service/shops';
 import { Button, CircularProgress, Input, Pagination, Tooltip } from '@nextui-org/react';
 import { IconLayoutList, IconLayoutGrid, IconPlus, IconSearch } from '@tabler/icons-react';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -71,9 +70,7 @@ const DashboardProductsPage = () => {
           >
             {products.map((product) => (
               <li key={product.id}>
-                <Link href={`/dashboard/products/${product.id}`} passHref>
-                  <ProductCard product={product} cardType={isGridLayout ? 'grid' : 'list'} />
-                </Link>
+                <ProductCard product={product} cardType={isGridLayout ? 'grid' : 'list'} />
               </li>
             ))}
           </ul>
