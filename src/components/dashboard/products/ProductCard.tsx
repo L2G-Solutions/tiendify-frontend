@@ -5,7 +5,7 @@ import ProductActionMenu from '@/components/dashboard/products/ProductActionMenu
 import Link from 'next/link';
 
 interface IProductCardProps {
-  product: Partial<TProduct>;
+  product: TProduct;
   href?: string;
   cardType?: 'grid' | 'list';
 }
@@ -44,7 +44,7 @@ const ProductCard = ({ product, cardType, href }: IProductCardProps) => {
         </main>
       </Link>
       <footer className="absolute top-2 right-2">
-        <ProductActionMenu isProductHidden={product.isHidden ?? false} />
+        <ProductActionMenu productId={product.id} isProductHidden={product.isHidden ?? false} />
       </footer>
     </article>
   );

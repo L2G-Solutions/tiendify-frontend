@@ -21,7 +21,7 @@ const DashboardProductsPage = () => {
     isSuccess,
     isLoading,
   } = useQuery({
-    queryFn: () => getShopProducts(page, PAGE_SIZE),
+    queryFn: () => getShopProducts({ page, size: PAGE_SIZE }),
     queryKey: 'shop-products',
   });
 
