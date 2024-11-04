@@ -144,8 +144,8 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
               <p>{product.description}</p>
               <div className="flex gap-2">
                 {product.categories?.map((category) => (
-                  <Chip key={category} color="secondary" variant="flat" size="sm" className="capitalize px-2">
-                    {category}
+                  <Chip key={category.id} color="secondary" variant="flat" size="sm" className="capitalize px-2">
+                    {category.name}
                   </Chip>
                 ))}
               </div>

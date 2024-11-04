@@ -15,7 +15,13 @@ export const getProductById = async ({ productId }: getProductPayload): Promise<
           'https://picfiles.alphacoders.com/364/364333.jpg',
           'https://picfiles.alphacoders.com/364/364333.jpg',
         ],
-        categories: ['clothing'],
+        categories: [
+          {
+            id: 'TPC123',
+            name: 'Clothing',
+            description: 'Clothing category',
+          },
+        ],
         isHidden: true,
       });
     }, 1500);
@@ -39,7 +45,18 @@ export const getShopProducts = async ({ page, size }: getProductsPayload): Promi
         'https://picfiles.alphacoders.com/364/364333.jpg',
         'https://picfiles.alphacoders.com/364/364333.jpg',
       ],
-      categories: ['clothing', 'woman', 'shoes'],
+      categories: [
+        {
+          id: 'TPC123',
+          name: 'Clothing',
+          description: 'Clothing category',
+        },
+        {
+          id: 'TPC124',
+          name: 'Shoes',
+          description: 'Shoes category',
+        },
+      ],
       isHidden: true,
     },
     {
@@ -55,7 +72,23 @@ export const getShopProducts = async ({ page, size }: getProductsPayload): Promi
         'https://picfiles.alphacoders.com/430/430511.jpg',
         'https://picfiles.alphacoders.com/430/430511.jpg',
       ],
-      categories: ['clothing', 'men', 't-shirt'],
+      categories: [
+        {
+          id: 'TPC123',
+          name: 'Clothing',
+          description: 'Clothing category',
+        },
+        {
+          id: 'TPC124',
+          name: 'Shoes',
+          description: 'Shoes category',
+        },
+        {
+          id: 'TPC125',
+          name: 'T-shirt',
+          description: 'T-shirt category',
+        },
+      ],
       isHidden: false,
     },
     {
@@ -71,7 +104,23 @@ export const getShopProducts = async ({ page, size }: getProductsPayload): Promi
         'https://images2.alphacoders.com/551/551806.jpg',
         'https://images2.alphacoders.com/551/551806.jpg',
       ],
-      categories: ['clothing', 'woman', 'blouse'],
+      categories: [
+        {
+          id: 'TPC123',
+          name: 'Clothing',
+          description: 'Clothing category',
+        },
+        {
+          id: 'TPC124',
+          name: 'woman',
+          description: 'Woman category',
+        },
+        {
+          id: 'TPC125',
+          name: 'Shoes',
+          description: 'Shoes category',
+        },
+      ],
       isHidden: false,
     },
   ];
@@ -101,7 +150,13 @@ export const createProduct = async ({ product }: createProductPayload): Promise<
           'https://picfiles.alphacoders.com/364/364333.jpg',
           'https://picfiles.alphacoders.com/364/364333.jpg',
         ],
-        categories: ['clothing'],
+        categories: [
+          {
+            id: 'TPC123',
+            name: 'Clothing',
+            description: 'Clothing category',
+          },
+        ],
         isHidden: true,
       });
     }, 1500);
@@ -125,7 +180,23 @@ export const editProduct = async ({ product }: editProductPayload): Promise<TPro
           'https://images2.alphacoders.com/551/551806.jpg',
           'https://images2.alphacoders.com/551/551806.jpg',
         ],
-        categories: ['clothing', 'woman', 'blouse'],
+        categories: [
+          {
+            id: 'TPC123',
+            name: 'Clothing',
+            description: 'Clothing category',
+          },
+          {
+            id: 'TPC124',
+            name: 'woman',
+            description: 'Woman category',
+          },
+          {
+            id: 'TPC125',
+            name: 'Shoes',
+            description: 'Shoes category',
+          },
+        ],
         isHidden: false,
       });
     }, 1500);
@@ -161,7 +232,13 @@ export const toggleProductVisibility = async ({
           'https://images2.alphacoders.com/551/551806.jpg',
           'https://images2.alphacoders.com/551/551806.jpg',
         ],
-        categories: ['clothing'],
+        categories: [
+          {
+            id: 'TPC123',
+            name: 'Clothing',
+            description: 'Clothing category',
+          },
+        ],
         isHidden: !isHidden,
       });
     }, 1500);
@@ -185,7 +262,13 @@ export const duplicateProduct = async ({ productId }: duplicateProductPayload): 
           'https://images2.alphacoders.com/551/551806.jpg',
           'https://images2.alphacoders.com/551/551806.jpg',
         ],
-        categories: ['clothing'],
+        categories: [
+          {
+            id: 'TPC123',
+            name: 'Clothing',
+            description: 'Clothing category',
+          },
+        ],
         isHidden: false,
       });
     }, 1500);

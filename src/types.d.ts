@@ -1,3 +1,9 @@
+type TProductCategory = {
+  id: string;
+  name: string;
+  description?: string;
+};
+
 type TProduct = {
   id: string;
   name: string;
@@ -6,7 +12,7 @@ type TProduct = {
   thumbnailImg: string;
   mediaFiles: string[];
   stock: number;
-  categories: string[];
+  categories: TProductCategory[];
   isHidden: boolean;
   createdAt: string;
 };
