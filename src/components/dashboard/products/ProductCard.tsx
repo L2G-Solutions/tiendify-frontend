@@ -12,13 +12,13 @@ interface IProductCardProps {
 
 const ProductCard = ({ product, cardType, href }: IProductCardProps) => {
   return (
-    <article className="relative bg-gray-50 shadow-md shadow-gray-100 border border-gray-100 rounded-2xl">
+    <article className="group relative bg-gray-50 shadow-md shadow-gray-100 border border-gray-100 rounded-2xl hover:shadow-lg hover:shadow-primary-50">
       <Link href={href ? href : `/dashboard/products/${product.id}`} passHref>
         <main className={twMerge('flex', cardType === 'grid' ? 'flex-col gap-2' : 'flex-row gap-4')}>
           <div className={twMerge('abosulte', cardType === 'list' && 'aspect-square')}>
             <img
               className={twMerge(
-                'object-cover aspect-square rounded-2xl shadow-sm',
+                'object-cover aspect-square rounded-2xl shadow-sm group-hover:scale-[1.025] transition-all',
                 cardType === 'grid' ? 'h-48' : 'h-44'
               )}
               src={product.thumbnailImg ?? 'https://placehold.co/150?text=📦'}
