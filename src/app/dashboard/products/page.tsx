@@ -31,6 +31,10 @@ const DashboardProductsPage = () => {
     setIsGridLayout((prev) => !prev);
   };
 
+  const handleAddProduct = () => {
+    router.push('/dashboard/products/add');
+  };
+
   return (
     <section className="flex flex-col gap-6">
       <header className="flex flex-col gap-2">
@@ -55,7 +59,7 @@ const DashboardProductsPage = () => {
               </Tooltip>
             </li>
           </ul>
-          <Button color="primary" startContent={<IconPlus size={16} />}>
+          <Button color="primary" startContent={<IconPlus size={16} />} onClick={handleAddProduct}>
             Add product
           </Button>
         </div>
@@ -71,7 +75,7 @@ const DashboardProductsPage = () => {
             {!products.length ? (
               <div className="flex flex-col items-center gap-4">
                 <p>No products found.</p>
-                <Button color="primary" startContent={<IconPlus size={16} />}>
+                <Button color="primary" startContent={<IconPlus size={16} />} onClick={handleAddProduct}>
                   Add product
                 </Button>
               </div>
