@@ -23,11 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased flex flex-col min-h-screen overflow-x-hidden`}>
-        <NavBar />
         <Providers>
-          <main className="py-20">{children}</main>
+          <NavBar />
+          <main className="pt-20">{children}</main>
+          <Footer />
         </Providers>
-        <Footer />
       </body>
     </html>
   );
