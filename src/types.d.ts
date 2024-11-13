@@ -10,7 +10,7 @@ type TProduct = {
   price: number;
   description: string;
   thumbnailImg: string;
-  mediaFiles: string[];
+  mediafiles: string[];
   stock: number;
   categories: TProductCategory[];
   isHidden: boolean;

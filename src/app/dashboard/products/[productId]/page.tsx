@@ -96,17 +96,17 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
           </header>
           <main className="flex flex-col lg:flex-row gap-8 mt-4">
             <div className="w-full flex flex-col lg:flex-row gap-4 items-center">
-              {product.mediaFiles?.length ? (
+              {product.mediafiles?.length ? (
                 <>
                   <div>
                     <img
-                      src={selectedImage || product.mediaFiles[0]}
+                      src={selectedImage || product.mediafiles[0]}
                       alt={product.name}
                       className="aspect-square object-cover rounded-lg"
                     />
                   </div>
-                  <div className="flex lg:flex-col gap-2 justify-center">
-                    {product.mediaFiles?.map((media, index) => (
+                  <div className="flex lg:flex-col gap-2 justify-center min-w-24">
+                    {product.mediafiles?.map((media, index) => (
                       <div key={`media-${index}`}>
                         <img
                           src={media}
