@@ -5,13 +5,13 @@ import { getShopProducts } from '@/service/products';
 import { Button, CircularProgress, Input, Pagination, Tooltip } from '@nextui-org/react';
 import { IconLayoutList, IconLayoutGrid, IconPlus, IconSearch } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useQuery } from 'react-query';
 import { twMerge } from 'tailwind-merge';
 
 const PAGE_SIZE = 12;
 
-const DashboardProductsPage = () => {
+const DashboardProducts = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = isNaN(Number(searchParams.get('page'))) ? 1 : Number(searchParams.get('page'));
@@ -125,6 +125,14 @@ const DashboardProductsPage = () => {
         )}
       </footer>
     </section>
+  );
+};
+
+const DashboardProductsPage = () => {
+  return (
+    <Suspense>
+      <DashboardProducts />
+    </Suspense>
   );
 };
 
