@@ -2,7 +2,7 @@
 import { deleteProduct, duplicateProduct, getProductById } from '@/service/products';
 import { formatPrice } from '@/utils/formatters';
 import { BreadcrumbItem, Breadcrumbs, Button, ButtonGroup, Chip, CircularProgress, Tooltip } from '@nextui-org/react';
-import { IconCopy, IconEye, IconEyeOff, IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconAlertCircle, IconCopy, IconEye, IconEyeOff, IconPencil, IconTrash } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -55,17 +55,16 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
       <small className="text-xs text-default-400">Product code: {params.productId}</small>
       {isSuccess && (
         <>
-          <header className="flex items-center justify-between gap-4 mt-4">
+          <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mt-4">
             <Breadcrumbs maxItems={2} underline="hover">
               <BreadcrumbItem href="../">Dashboard</BreadcrumbItem>
               <BreadcrumbItem href="./">Products</BreadcrumbItem>
               <BreadcrumbItem>{product.name}</BreadcrumbItem>
             </Breadcrumbs>
-            <ButtonGroup>
+            <ButtonGroup variant="flat">
               <Tooltip content="Duplicate product" placement="top">
                 <Button
                   color="default"
-                  variant="flat"
                   isIconOnly
                   startContent={!duplicateProductMutation.isLoading && <IconCopy size={16} />}
                   isLoading={duplicateProductMutation.isLoading}
@@ -75,7 +74,6 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
               <Tooltip content="Delete product" placement="top">
                 <Button
                   color="default"
-                  variant="flat"
                   className="text-danger-500"
                   isIconOnly
                   startContent={!deleteProductMutation.isLoading && <IconTrash size={16} />}
@@ -85,7 +83,6 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
               </Tooltip>
               <Button
                 color="default"
-                variant="flat"
                 className="text-secondary-500"
                 startContent={<IconPencil size={16} />}
                 onClick={handleEditProduct}
@@ -94,7 +91,7 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
               </Button>
             </ButtonGroup>
           </header>
-          <main className="flex flex-col lg:flex-row gap-8 mt-4">
+          <main className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
             <div className="w-full flex flex-col lg:flex-row gap-4 items-center">
               {product.mediafiles?.length ? (
                 <>
@@ -119,11 +116,13 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
                   </div>
                 </>
               ) : (
-                <img
-                  src={product.thumbnailImg}
-                  alt={product.name}
-                  className="w-48 aspect-square object-cover rounded-lg"
-                />
+                <div className="w-full flex flex-col items-center justify-center gap-2">
+                  <IconAlertCircle size={64} stroke={1.5} className="text-warning-500" />
+                  <p className="text-warning-500">No images available</p>
+                  <Button color="default" variant="light" size="sm">
+                    Upload images
+                  </Button>
+                </div>
               )}
             </div>
             <div className="flex flex-col gap-2 px-4">
@@ -142,7 +141,7 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
                 </Chip>
               </div>
               <p>{product.description}</p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {product.categories?.map((category) => (
                   <Chip key={category.id} color="secondary" variant="flat" size="sm" className="capitalize px-2">
                     {category.name}
@@ -153,7 +152,16 @@ const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
               <p className={twMerge(product.stock === 0 && 'text-danger-500')}>
                 {product.stock === 0 ? 'Out of stock' : `${product.stock} in stock`}
               </p>
-              <small className="text-xs text-default-400">Last updated: {product.createdAt}</small>
+              <small className="text-xs text-default-400">
+                Created on{' '}
+                {new Date(product.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                })}
+              </small>
             </div>
           </main>
         </>
