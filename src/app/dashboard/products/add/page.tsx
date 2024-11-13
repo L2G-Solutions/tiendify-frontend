@@ -1,8 +1,23 @@
 'use client';
 import ProductsForm from '@/components/dashboard/products/ProductsForm';
+import { createProduct } from '@/service/products';
+import { useRouter } from 'next/navigation';
+import { useMutation } from 'react-query';
+import { toast } from 'sonner';
 
-// TODO: Implement product creation logic
 const ProductCreatePage = () => {
+  const router = useRouter();
+
+  const createProductMutation = useMutation(createProduct, {
+    onSuccess: (product) => {
+      toast.success('Product created successfully');
+      router.push(`/dashboard/products/${product.id}`);
+    },
+    onError: () => {
+      toast.error('Failed to create product');
+    },
+  });
+
   return (
     <section>
       <h1>Create a product</h1>
@@ -13,7 +28,7 @@ const ProductCreatePage = () => {
       <main className="mt-4">
         <ProductsForm
           onSubmit={(product) => {
-            console.log(product);
+            createProductMutation.mutate(product as createProductPayload);
           }}
         />
       </main>
