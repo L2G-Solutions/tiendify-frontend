@@ -1,8 +1,10 @@
 'use client';
 import ProductsForm from '@/components/dashboard/products/ProductsForm';
-import { getProductById } from '@/service/products';
+import { editProduct, getProductById } from '@/service/products';
 import { CircularProgress } from '@nextui-org/react';
-import { useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { useMutation, useQuery } from 'react-query';
+import { toast } from 'sonner';
 
 interface IProductEditPageProps {
   params: {
@@ -12,6 +14,7 @@ interface IProductEditPageProps {
 
 // TODO: Implement product update mutation
 const ProductEditPage = ({ params }: IProductEditPageProps) => {
+  const router = useRouter();
   const {
     data: originalProduct,
     isSuccess: isOriginalProductSuccess,
@@ -20,6 +23,18 @@ const ProductEditPage = ({ params }: IProductEditPageProps) => {
   } = useQuery({
     queryFn: () => getProductById({ productId: params.productId }),
     queryKey: ['product-details', params.productId],
+  });
+
+  const editProductMutation = useMutation({
+    mutationFn: (productPayload: editProductPayload) =>
+      editProduct({ productId: params.productId, product: productPayload.product }),
+    onSuccess: () => {
+      toast.success('Product updated successfully');
+      router.push(`/dashboard/products/${params.productId}`);
+    },
+    onError: () => {
+      toast.error('Failed to update product');
+    },
   });
 
   return (
@@ -34,8 +49,8 @@ const ProductEditPage = ({ params }: IProductEditPageProps) => {
         {isOriginalProductSuccess && (
           <ProductsForm
             product={originalProduct}
-            onSubmit={(product) => {
-              console.log(product);
+            onSubmit={(productPayload) => {
+              editProductMutation.mutate(productPayload as editProductPayload);
             }}
           />
         )}
