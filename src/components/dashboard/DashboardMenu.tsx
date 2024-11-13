@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 export const DashboardMenu = () => {
   return (
-    <menu className="flex flex-col gap-4 h-[100dvh] py-20 border-r">
+    <menu className="flex flex-col gap-4 h-[100dvh] pb-20 border-r sticky top-0">
       <MenuLink href="/dashboard">
         <IconBuildingStore stroke={1} />
         My shop

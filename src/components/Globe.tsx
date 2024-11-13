@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+'use client';
 
-import createGlobe, { COBEOptions } from "cobe";
-import { useCallback, useEffect, useRef, useState } from "react";
-
-import { twMerge } from "tailwind-merge";
+import createGlobe, { COBEOptions } from 'cobe';
+import { useEffect, useRef } from 'react';
+import { useSpring } from '@react-spring/web';
+import { twMerge } from 'tailwind-merge';
 
 const GLOBE_CONFIG: COBEOptions = {
   width: 800,
   height: 800,
-  onRender: () => { },
+  onRender: () => {},
   devicePixelRatio: 2,
   phi: 0,
   theta: 0.3,
@@ -20,105 +19,135 @@ const GLOBE_CONFIG: COBEOptions = {
   baseColor: [1, 1, 1],
   markerColor: [243 / 255, 18 / 255, 96 / 255],
   glowColor: [1, 1, 1],
-  markers: [
-    { location: [14.5995, 120.9842], size: 0.03 },
-    { location: [19.076, 72.8777], size: 0.1 },
-    { location: [23.8103, 90.4125], size: 0.05 },
-    { location: [30.0444, 31.2357], size: 0.07 },
-    { location: [39.9042, 116.4074], size: 0.08 },
-    { location: [-23.5505, -46.6333], size: 0.1 },
-    { location: [19.4326, -99.1332], size: 0.1 },
-    { location: [40.7128, -74.006], size: 0.1 },
-    { location: [34.6937, 135.5022], size: 0.05 },
-    { location: [41.0082, 28.9784], size: 0.06 },
-  ],
+  markers: [],
 };
 
 export function Globe({
   className,
-  config = GLOBE_CONFIG,
+  globeConfig = GLOBE_CONFIG,
+  selectedMarker,
 }: {
   className?: string;
-  config?: COBEOptions;
+  globeConfig?: Partial<COBEOptions>;
+  selectedMarker?: { latitude: number; longitude: number };
 }) {
-  let phi = 0;
-  let width = 0;
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pointerInteracting = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const pointerInteracting = useRef<number | null>(null);
   const pointerInteractionMovement = useRef(0);
-  const [r, setR] = useState(0);
 
-  const updatePointerInteraction = (value: any) => {
-    pointerInteracting.current = value;
-    if (canvasRef.current) {
-      canvasRef.current.style.cursor = value ? "grabbing" : "grab";
-    }
-  };
+  const config: COBEOptions = { ...GLOBE_CONFIG, ...globeConfig };
 
-  const updateMovement = (clientX: any) => {
-    if (pointerInteracting.current !== null) {
-      const delta = clientX - pointerInteracting.current;
-      pointerInteractionMovement.current = delta;
-      setR(delta / 200);
-    }
-  };
-
-  const onRender = useCallback(
-    (state: Record<string, any>) => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (!pointerInteracting.current) phi += 0.005;
-      state.phi = phi + r;
-      state.width = width * 2;
-      state.height = width * 2;
+  const [{ r, l }, api] = useSpring(() => ({
+    r: 0,
+    l: 0.3,
+    config: {
+      mass: 1,
+      tension: 280,
+      friction: 40,
+      precision: 0.001,
     },
-    [r],
-  );
-
-  const onResize = () => {
-    if (canvasRef.current) {
-      width = canvasRef.current.offsetWidth;
-    }
-  };
+  }));
 
   useEffect(() => {
-    window.addEventListener("resize", onResize);
+    if (!canvasRef.current) return;
+
+    let width = 0;
+
+    const onResize = () => {
+      if (canvasRef.current) {
+        width = canvasRef.current.offsetWidth;
+      }
+    };
+
+    window.addEventListener('resize', onResize);
     onResize();
 
-    const globe = createGlobe(canvasRef.current!, {
+    const globe = createGlobe(canvasRef.current, {
       ...config,
-      width: width * 2,
-      height: width * 2,
-      onRender,
+      onRender: (state) => {
+        state.phi = r.get();
+        state.theta = l.get();
+        state.width = width * 2;
+        state.height = width * 2;
+      },
     });
 
-    setTimeout(() => (canvasRef.current!.style.opacity = "1"));
-    return () => globe.destroy();
+    setTimeout(() => {
+      if (canvasRef.current) {
+        canvasRef.current.style.opacity = '1';
+      }
+    }, 0);
+
+    return () => {
+      globe.destroy();
+      window.removeEventListener('resize', onResize);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (selectedMarker) {
+      const phi = Math.PI - ((selectedMarker.longitude * Math.PI) / 180 - Math.PI / 2);
+      const theta = (selectedMarker.latitude * Math.PI) / 180;
+
+      api.start({
+        r: phi,
+        l: theta,
+      });
+    }
+  }, [selectedMarker, api]);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    pointerInteracting.current = e.clientX - pointerInteractionMovement.current;
+    if (canvasRef.current) {
+      canvasRef.current.style.cursor = 'grabbing';
+    }
+  };
+
+  const handlePointerUp = () => {
+    pointerInteracting.current = null;
+    if (canvasRef.current) {
+      canvasRef.current.style.cursor = 'grab';
+    }
+  };
+
+  const handlePointerOut = () => {
+    pointerInteracting.current = null;
+    if (canvasRef.current) {
+      canvasRef.current.style.cursor = 'grab';
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (pointerInteracting.current !== null) {
+      const delta = e.clientX - pointerInteracting.current;
+      pointerInteractionMovement.current = delta;
+      api.start({
+        r: delta / 200,
+      });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (pointerInteracting.current !== null && e.touches[0]) {
+      const delta = e.touches[0].clientX - pointerInteracting.current;
+      pointerInteractionMovement.current = delta;
+      api.start({
+        r: delta / 100,
+      });
+    }
+  };
+
   return (
-    <div
-      className={twMerge(
-        "absolute inset-0 mx-auto aspect-[1/1] w-full max-w-[600px]",
-        className,
-      )}
-    >
+    <div className={twMerge('w-full max-w-[700px] aspect-square mx-auto relative', className)}>
       <canvas
-        className={twMerge(
-          "size-full opacity-0 transition-opacity duration-200 [contain:layout_paint_size]",
-        )}
         ref={canvasRef}
-        onPointerDown={(e) =>
-          updatePointerInteraction(
-            e.clientX - pointerInteractionMovement.current,
-          )
-        }
-        onPointerUp={() => updatePointerInteraction(null)}
-        onPointerOut={() => updatePointerInteraction(null)}
-        onMouseMove={(e) => updateMovement(e.clientX)}
-        onTouchMove={(e) =>
-          e.touches[0] && updateMovement(e.touches[0].clientX)
-        }
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerOut={handlePointerOut}
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
+        className="w-full h-full cursor-grab opacity-0 transition-opacity duration-500 ease-in-out [contain layout paint size]"
       />
     </div>
   );
