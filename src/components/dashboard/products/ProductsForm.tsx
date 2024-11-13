@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 
 interface IProductsFormProps {
   product?: Partial<TProduct>;
-  onSubmit: (product: Partial<TProduct>) => void;
+  onSubmit: (product: createProductPayload | editProductPayload) => void;
 }
 
 const MAX_MEDIA_FILES = 5;
@@ -49,7 +49,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
 
     if (
       validateFiles({
-        files: formData.getAll('mediaFiles') as File[],
+        files: formData.getAll('mediafiles') as File[],
         maxFiles: MAX_MEDIA_FILES,
         maxSize: MAX_MEDIA_FILE_SIZE,
       })
@@ -57,14 +57,15 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
       return;
     }
 
-    const PayloadProduct: Omit<TProduct, 'id' | 'thumbnailImg' | 'createdAt'> = {
-      name: formData.get('name') as string,
-      price: Number(formData.get('price')),
-      description: formData.get('description') as string,
-      mediaFiles: (formData.getAll('mediaFiles') as File[]).map((file) => URL.createObjectURL(file)),
-      stock: Number(formData.get('stock')),
-      categories: selectedCategories,
-      isHidden: !isPublicProduct,
+    const PayloadProduct: createProductPayload = {
+      product: {
+        name: formData.get('name') as string,
+        price: Number(formData.get('price')),
+        description: formData.get('description') as string,
+        stock: Number(formData.get('stock')),
+        categories: selectedCategories.map((category) => category.id),
+        isHidden: !isPublicProduct,
+      },
     };
     onSubmit(PayloadProduct);
   };
@@ -113,7 +114,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
       />
       <Input
         type="file"
-        name="mediaFiles"
+        name="mediafiles"
         startContent={<IconPhotoSpark size={16} className="text-default-400" />}
         label="Product images"
         labelPlacement="outside"

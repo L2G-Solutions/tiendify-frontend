@@ -13,11 +13,19 @@ type getProductsResponse = {
 };
 
 type createProductPayload = {
-  product: Omit<TProduct, 'id' | 'createdAt'>;
+  product: {
+    name: string;
+    price: number;
+    description: string;
+    stock: number;
+    categories: string[];
+    isHidden: boolean;
+  };
 };
 
 type editProductPayload = {
-  product: Partial<Omit<TProduct, 'createdAt'>>;
+  product: Partial<TProduct>;
+  productId: string;
 };
 
 type deleteProductPayload = {

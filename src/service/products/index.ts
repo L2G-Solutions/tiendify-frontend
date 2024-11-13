@@ -1,284 +1,81 @@
+import axios from 'axios';
+
+const API_URL = process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL;
+
+const fetcher = axios.create({
+  baseURL: API_URL + '/products',
+});
+
 export const getProductById = async ({ productId }: getProductPayload): Promise<TProduct> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        id: productId,
-        name: 'Tennis',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        price: 123.5,
-        stock: 0,
-        createdAt: '2021-10-01',
-        thumbnailImg: 'https://picfiles.alphacoders.com/364/364333.jpg',
-        mediaFiles: [
-          'https://picfiles.alphacoders.com/364/364333.jpg',
-          'https://picfiles.alphacoders.com/364/364333.jpg',
-          'https://picfiles.alphacoders.com/364/364333.jpg',
-        ],
-        categories: [
-          {
-            id: 'TPC123',
-            name: 'Clothing',
-            description: 'Clothing category',
-          },
-        ],
-        isHidden: true,
-      });
-    }, 1500);
-  });
+  return (await fetcher.get(`/${productId}`)).data;
 };
 
 export const getShopProducts = async ({ page, size }: getProductsPayload): Promise<getProductsResponse> => {
-  // TODO: Fetch shop products from the API
-  const products: TProduct[] = [
-    {
-      id: 'TP32312',
-      name: 'Tennis',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 123.5,
-      stock: 0,
-      createdAt: '2021-10-01',
-      thumbnailImg: 'https://picfiles.alphacoders.com/364/364333.jpg',
-      mediaFiles: [
-        'https://picfiles.alphacoders.com/364/364333.jpg',
-        'https://picfiles.alphacoders.com/364/364333.jpg',
-        'https://picfiles.alphacoders.com/364/364333.jpg',
-      ],
-      categories: [
-        {
-          id: 'TPC123',
-          name: 'Clothing',
-          description: 'Clothing category',
-        },
-        {
-          id: 'TPC124',
-          name: 'Shoes',
-          description: 'Shoes category',
-        },
-      ],
-      isHidden: true,
-    },
-    {
-      id: 'TP32313',
-      name: 'Sport T-shirt',
-      description: 'Product 2 description',
-      price: 86.5,
-      stock: 20,
-      createdAt: '2021-10-01',
-      thumbnailImg: 'https://picfiles.alphacoders.com/430/430511.jpg',
-      mediaFiles: [
-        'https://picfiles.alphacoders.com/430/430511.jpg',
-        'https://picfiles.alphacoders.com/430/430511.jpg',
-        'https://picfiles.alphacoders.com/430/430511.jpg',
-      ],
-      categories: [
-        {
-          id: 'TPC123',
-          name: 'Clothing',
-          description: 'Clothing category',
-        },
-        {
-          id: 'TPC124',
-          name: 'Shoes',
-          description: 'Shoes category',
-        },
-        {
-          id: 'TPC125',
-          name: 'T-shirt',
-          description: 'T-shirt category',
-        },
-      ],
-      isHidden: false,
-    },
-    {
-      id: 'TP32314',
-      name: 'Blouse',
-      description: 'Product 3 description',
-      price: 45.5,
-      stock: 10,
-      createdAt: '2021-10-01',
-      thumbnailImg: 'https://images2.alphacoders.com/551/551806.jpg',
-      mediaFiles: [
-        'https://images2.alphacoders.com/551/551806.jpg',
-        'https://images2.alphacoders.com/551/551806.jpg',
-        'https://images2.alphacoders.com/551/551806.jpg',
-      ],
-      categories: [
-        {
-          id: 'TPC123',
-          name: 'Clothing',
-          description: 'Clothing category',
-        },
-        {
-          id: 'TPC124',
-          name: 'woman',
-          description: 'Woman category',
-        },
-        {
-          id: 'TPC125',
-          name: 'Shoes',
-          description: 'Shoes category',
-        },
-      ],
-      isHidden: false,
-    },
-  ];
-  console.log('Fetching products...', page, size);
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        products: [...products, ...products],
-        total: 200,
-      });
-    }, 1500);
-  });
+  return (
+    await fetcher.get('/', {
+      params: { page, size },
+    })
+  ).data;
 };
 
 export const createProduct = async ({ product }: createProductPayload): Promise<TProduct> => {
-  console.log('Creating product...', product);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        id: 'TP32315',
-        ...product,
-        createdAt: '2021-10-01',
-        thumbnailImg: 'https://picfiles.alphacoders.com/364/364333.jpg',
-        mediaFiles: [
-          'https://picfiles.alphacoders.com/364/364333.jpg',
-          'https://picfiles.alphacoders.com/364/364333.jpg',
-          'https://picfiles.alphacoders.com/364/364333.jpg',
-        ],
-        categories: [
-          {
-            id: 'TPC123',
-            name: 'Clothing',
-            description: 'Clothing category',
-          },
-        ],
-        isHidden: true,
-      });
-    }, 1500);
-  });
+  return (await fetcher.post('/', product)).data;
 };
 
-export const editProduct = async ({ product }: editProductPayload): Promise<TProduct> => {
-  console.log('Editing product...', product);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        id: 'TP32314',
-        name: 'Blouse',
-        description: 'Product 3 description',
-        price: 45.5,
-        stock: 10,
-        createdAt: '2021-10-01',
-        thumbnailImg: 'https://images2.alphacoders.com/551/551806.jpg',
-        mediaFiles: [
-          'https://images2.alphacoders.com/551/551806.jpg',
-          'https://images2.alphacoders.com/551/551806.jpg',
-          'https://images2.alphacoders.com/551/551806.jpg',
-        ],
-        categories: [
-          {
-            id: 'TPC123',
-            name: 'Clothing',
-            description: 'Clothing category',
-          },
-          {
-            id: 'TPC124',
-            name: 'woman',
-            description: 'Woman category',
-          },
-          {
-            id: 'TPC125',
-            name: 'Shoes',
-            description: 'Shoes category',
-          },
-        ],
-        isHidden: false,
-      });
-    }, 1500);
-  });
+export const editProduct = async ({ productId, product }: editProductPayload): Promise<TProduct> => {
+  return (await fetcher.put(`/${productId}`, product)).data;
 };
 
 export const deleteProduct = async ({ productId }: deleteProductPayload): Promise<void> => {
-  console.log('Deleting product...', productId);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 1500);
-  });
+  await fetcher.delete(`/${productId}`);
 };
 
+// TODO: Implement the corresponding service functions
 export const toggleProductVisibility = async ({
   productId,
   isHidden,
 }: toggleProductVisibilityPayload): Promise<TProduct> => {
   console.log('Toggling product visibility...', productId, isHidden);
+  const product = await getProductById({ productId });
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        id: 'TP32314',
-        name: 'Blouse',
-        description: 'Product 3 description',
-        price: 45.5,
-        stock: 10,
-        createdAt: '2021-10-01',
-        thumbnailImg: 'https://images2.alphacoders.com/551/551806.jpg',
-        mediaFiles: [
-          'https://images2.alphacoders.com/551/551806.jpg',
-          'https://images2.alphacoders.com/551/551806.jpg',
-          'https://images2.alphacoders.com/551/551806.jpg',
-        ],
-        categories: [
-          {
-            id: 'TPC123',
-            name: 'Clothing',
-            description: 'Clothing category',
-          },
-        ],
+        ...product,
         isHidden: !isHidden,
       });
-    }, 1500);
+    }, 500);
   });
 };
 
 export const duplicateProduct = async ({ productId }: duplicateProductPayload): Promise<TProduct> => {
-  console.log('Duplicating product...', productId);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        id: 'TP32316',
-        name: 'Blouse',
-        description: 'Product 3 description',
-        price: 45.5,
-        stock: 10,
-        createdAt: '2021-10-01',
-        thumbnailImg: 'https://images2.alphacoders.com/551/551806.jpg',
-        mediaFiles: [
-          'https://images2.alphacoders.com/551/551806.jpg',
-          'https://images2.alphacoders.com/551/551806.jpg',
-          'https://images2.alphacoders.com/551/551806.jpg',
-        ],
-        categories: [
-          {
-            id: 'TPC123',
-            name: 'Clothing',
-            description: 'Clothing category',
-          },
-        ],
-        isHidden: false,
-      });
-    }, 1500);
+  const product = await getProductById({ productId });
+
+  if (!product) {
+    throw new Error('Product not found');
+  }
+
+  return await createProduct({
+    product: {
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      stock: product.stock,
+      categories: product.categories.map((category) => category.id),
+      isHidden: product.isHidden,
+    },
   });
 };
 
+// TODO: Implement the corresponding service functions
 export const getProductCategories = async (): Promise<TProductCategory[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
+        {
+          id: 'consumible',
+          name: 'Consumible',
+          description: 'Productos para la ingesta humana',
+        },
         {
           id: 'TPC123',
           name: 'Clothing',
@@ -299,6 +96,7 @@ export const getProductCategories = async (): Promise<TProductCategory[]> => {
   });
 };
 
+// TODO: Implement the corresponding service functions
 export const createProductCategory = async ({ category }: createProductCategoryPayload): Promise<TProductCategory> => {
   console.log('Creating category...', category);
   return new Promise((resolve) => {
