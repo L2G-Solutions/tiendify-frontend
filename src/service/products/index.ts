@@ -35,16 +35,7 @@ export const toggleProductVisibility = async ({
   productId,
   isHidden,
 }: toggleProductVisibilityPayload): Promise<TProduct> => {
-  console.log('Toggling product visibility...', productId, isHidden);
-  const product = await getProductById({ productId });
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        ...product,
-        isHidden: !isHidden,
-      });
-    }, 500);
-  });
+  return (await fetcher.patch(`/${productId}/visibility`, { hidden: isHidden })).data;
 };
 
 export const duplicateProduct = async ({ productId }: duplicateProductPayload): Promise<TProduct> => {
