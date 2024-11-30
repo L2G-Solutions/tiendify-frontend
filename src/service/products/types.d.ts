@@ -5,6 +5,7 @@ type getProductPayload = {
 type getProductsPayload = {
   page: number;
   size: number;
+  searchQuery?: string;
 };
 
 type getProductsResponse = {

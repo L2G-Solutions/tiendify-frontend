@@ -5,7 +5,7 @@ import { getShopProducts } from '@/service/products';
 import { Button, CircularProgress, Input, Pagination, Tooltip } from '@nextui-org/react';
 import { IconLayoutList, IconLayoutGrid, IconPlus, IconSearch } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { twMerge } from 'tailwind-merge';
 
@@ -15,16 +15,22 @@ const DashboardProducts = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = isNaN(Number(searchParams.get('page'))) ? 1 : Number(searchParams.get('page'));
-  const search = searchParams.get('search') || '';
+  const [search, setSearch] = useState(searchParams.get('search') || '');
 
   const {
+    refetch,
     data: { products = [], total = 0 } = {},
     isSuccess,
     isLoading,
   } = useQuery({
-    queryFn: () => getShopProducts({ page, size: PAGE_SIZE }),
-    queryKey: 'shop-products',
+    queryFn: () => getShopProducts({ page, size: PAGE_SIZE, searchQuery: search ? search : undefined }),
+    queryKey: ['shop-products', page, search],
   });
+
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, page]);
 
   const [isGridLayout, setIsGridLayout] = useState(false);
 
@@ -47,6 +53,8 @@ const DashboardProducts = () => {
               name="search"
               maxLength={100}
               startContent={<IconSearch size={16} />}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <Button type="submit" color="default" variant="flat">
               Search

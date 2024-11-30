@@ -10,10 +10,14 @@ export const getProductById = async ({ productId }: getProductPayload): Promise<
   return (await fetcher.get(`/${productId}`)).data;
 };
 
-export const getShopProducts = async ({ page, size }: getProductsPayload): Promise<getProductsResponse> => {
+export const getShopProducts = async ({
+  page,
+  size,
+  searchQuery,
+}: getProductsPayload): Promise<getProductsResponse> => {
   return (
     await fetcher.get('/', {
-      params: { page, size },
+      params: { page, size, search: searchQuery },
     })
   ).data;
 };
