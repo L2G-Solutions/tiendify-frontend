@@ -42,3 +42,49 @@ export const FEATURES = [
     redirectRoute: '/docs',
   },
 ];
+
+export const PRICING_PLANS = [
+  {
+    planName: 'Starter',
+    price: '$14.99/month',
+    features: [
+      'Up to 100 products',
+      'Basic analytics',
+      'Email support',
+      'Single language',
+      'Single currency',
+      'Order tracking',
+    ],
+    cta: 'Get Started',
+    redirectRoute: '/checkout/starter',
+  },
+  {
+    planName: 'Professional',
+    price: '$39.99/month',
+    features: [
+      'All Starter features',
+      'Unlimited products',
+      'Advanced analytics',
+      'Priority email support',
+      'Multi-language support',
+      'Multi-currency support',
+      'Custom domain support',
+    ],
+    cta: 'Upgrade Now',
+    redirectRoute: '/checkout/professional',
+  },
+  {
+    planName: 'Enterprise',
+    price: 'Custom Pricing',
+    features: [
+      'All Professional features',
+      'Dedicated account manager',
+      'Custom integrations',
+      'Full API access',
+      'Unlimited everything',
+      '24/7 online support',
+    ],
+    cta: 'Contact Sales',
+    redirectRoute: '/contact-sales',
+  },
+];

@@ -1,8 +1,9 @@
 import FeatureCard from '@/components/landing/FeatureCard';
 import LandingHeroSection from '@/components/landing/HeroSection';
+import PricingCard from '@/components/landing/PricingCard';
 import ShadowElipse from '@/components/ShadowElipse';
 
-import { FEATURES } from '@/constants/landingInfo';
+import { FEATURES, PRICING_PLANS } from '@/constants/landingInfo';
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
       <h2 id="about" className="text-6xl text-primary font-bold text-center py-12">
         What we offer
       </h2>
-      <div className='flex justify-center'>
+      <div className="flex justify-center">
         <section className="px-8 lg:px-32 grid grid-cols-1 gap-12 py-8 md:grid-cols-2 lg:grid-cols-3 auto-rows-min">
           {FEATURES.map((feature, index) => (
             <FeatureCard
@@ -20,6 +21,23 @@ export default function Home() {
               description={feature.description}
               icon={feature.illustrationPath}
               redirectRoute={feature.redirectRoute}
+            />
+          ))}
+        </section>
+      </div>
+      <h2 id="about" className="text-6xl text-primary font-bold text-center py-12">
+        Our pricing plans
+      </h2>
+      <div className="flex justify-center">
+        <section className="px-8 lg:px-32 grid grid-cols-1 gap-12 py-8 md:grid-cols-2 lg:grid-cols-3">
+          {PRICING_PLANS.map((plan, index) => (
+            <PricingCard
+              key={index}
+              planName={plan.planName}
+              features={plan.features}
+              price={plan.price}
+              ctaText={plan.cta}
+              redirectRoute={plan.redirectRoute}
             />
           ))}
         </section>
