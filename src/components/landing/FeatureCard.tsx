@@ -10,7 +10,7 @@ interface IFeatureCardProps {
 const FeatureCard = ({ title, description, icon, redirectRoute }: IFeatureCardProps) => {
   return (
     <Link href={redirectRoute}>
-      <article className="flex flex-col items-center text-center px-8 py-12 gap-y-8 shadow-xl rounded-3xl bg-white max-w-80 h-full">
+      <article className="flex flex-col items-center text-center px-8 py-12 gap-y-8 shadow-xl rounded-3xl bg-white max-w-80 h-full hover:shadow-primary-100 hover:scale-[1.025] transition-transform">
         <div className="w-[90%]">
           <img src={icon} alt={title} />
         </div>
