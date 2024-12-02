@@ -12,7 +12,11 @@ export default async function NotFoundPage() {
           </Link>
           .
         </p>
-        <img src="/illustrations/not-found.svg" className="max-w-[70%] md:max-w-[40%] lg:max-w-[25%]" />
+        <img
+          src="/illustrations/not-found.svg"
+          alt="Not found illustration"
+          className="max-w-[70%] md:max-w-[40%] lg:max-w-[25%]"
+        />
       </main>
     </section>
   );
