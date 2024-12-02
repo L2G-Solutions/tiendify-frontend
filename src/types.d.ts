@@ -16,3 +16,10 @@ type TProduct = {
   isHidden: boolean;
   createdAt: string;
 };
+
+type Pagination = {
+  limit: number;
+  offset: number;
+};
+
+type AccessToken = string;
