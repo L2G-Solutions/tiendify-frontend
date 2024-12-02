@@ -20,5 +20,6 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'space-before-function-paren': 0,
     'multiline-ternary': 0,
+    '@next/next/no-img-element': 'off',
   },
 };
