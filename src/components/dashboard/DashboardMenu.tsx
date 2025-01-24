@@ -1,5 +1,6 @@
 import {
   IconAddressBook,
+  IconApi,
   IconBuildingStore,
   IconReceipt2,
   IconSettings,
@@ -35,6 +36,10 @@ export const DashboardMenu = () => {
       <MenuLink href="/dashboard/account">
         <IconAddressBook stroke={1} />
         Account
+      </MenuLink>
+      <MenuLink href="/dashboard/api-integration">
+        <IconApi stroke={1} />
+        API Integration
       </MenuLink>
       <MenuLink href="/dashboard/settings">
         <IconSettings stroke={1} />

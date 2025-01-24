@@ -10,9 +10,16 @@ type TProduct = {
   price: number;
   description: string;
   thumbnailImg: string;
-  mediaFiles: string[];
+  mediafiles: string[];
   stock: number;
   categories: TProductCategory[];
   isHidden: boolean;
   createdAt: string;
 };
+
+type Pagination = {
+  limit: number;
+  offset: number;
+};
+
+type AccessToken = string;

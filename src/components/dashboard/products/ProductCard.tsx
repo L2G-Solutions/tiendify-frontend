@@ -27,7 +27,9 @@ const ProductCard = ({ product, cardType, href }: IProductCardProps) => {
             />
           </div>
           <div className={twMerge('flex-1 flex flex-col gap-2', cardType === 'grid' ? 'p-4 pt-2' : 'p-2')}>
-            <small className="text-xs text-default-400">{product.id}</small>
+            <Chip color={product.isHidden ? 'warning' : 'success'} variant="flat" size="sm" className="px-2">
+              {product.isHidden ? 'Private' : 'Public'} product
+            </Chip>
             <h3 className="text-xl font-bold">{product.name}</h3>
             <div className="flex gap-2">
               {product.categories?.map((category) => (
