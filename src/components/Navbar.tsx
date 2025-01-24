@@ -58,7 +58,7 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar className="py-1 [&>header]:max-w-full" shouldHideOnScroll>
+    <Navbar className="py-1 [&>header]:max-w-full fixed" shouldHideOnScroll>
       <NavbarBrand>
         <h2 className="text-primary font-bold">Tiendify 🛍️</h2>
       </NavbarBrand>
