@@ -20,3 +20,14 @@ export const getCurrentSession = async (token: string): Promise<GetCurrentSessio
 export const logout = async (token: string): Promise<void> => {
   await getFetcher(token).post('/private/logout');
 };
+
+export const authorizeLogin = async (queryParams: URLSearchParams, validation_uri: string): Promise<void> => {
+  const params = new URLSearchParams(queryParams);
+  params.append('validation_uri', validation_uri);
+  return (
+    await axios.post(API_URL + '/auth/public/authorize', null, {
+      params: params,
+      withCredentials: true,
+    })
+  ).data;
+};
