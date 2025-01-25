@@ -4,7 +4,7 @@ export default function DashboardLayout({ children }: Readonly<{ children: React
   return (
     <main className="flex max-h-full">
       <DashboardMenu />
-      <section className="flex-1 p-20 flex flex-col gap-8">{children}</section>
+      <section className="flex-1 px-20 flex flex-col gap-8">{children}</section>
     </main>
   );
 }
