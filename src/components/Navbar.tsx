@@ -60,7 +60,9 @@ const NavBar = () => {
   return (
     <Navbar className="py-1 [&>header]:max-w-full fixed" shouldHideOnScroll>
       <NavbarBrand>
-        <h2 className="text-primary font-bold">Tiendify 🛍️</h2>
+        <Link href="/">
+          <h2 className="text-primary font-bold">Tiendify 🛍️</h2>
+        </Link>
       </NavbarBrand>
       <NavbarContent justify="end">
         {NAVBAR_LINKS.map(({ name, href, withLogin, withLogout }) => {
