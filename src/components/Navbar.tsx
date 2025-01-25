@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import useCurentUrl from '@/hooks/useCurentUrl';
 import { logout } from '@/service/auth';
 import {
   Navbar,
@@ -20,18 +21,6 @@ import { IconUser } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 
-const NAVBAR_LINKS = [
-  { name: 'About', href: '/about', withLogin: true, withLogout: true },
-  { name: 'Docs', href: '/docs', withLogin: true, withLogout: true },
-  { name: 'Infrastructure', href: '/infrastructure', withLogin: true, withLogout: true },
-  {
-    name: 'Sign In',
-    href: `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login`,
-    withLogin: false,
-    withLogout: true,
-  },
-];
-
 const NAVBAR_BUTTONS = [{ name: 'Sign Up', href: '/signup', withLogin: false, withLogout: true }];
 
 const NAVBAR_DROPDOWN_SETTINGS = [
@@ -43,6 +32,20 @@ const NavBar = () => {
   const router = useRouter();
 
   const { status, userData, setUserData } = useAuth();
+
+  const { domainUrl } = useCurentUrl();
+  const LOGIN_REDIRECT_URL = `${domainUrl}/auth/authorize`;
+  const NAVBAR_LINKS = [
+    { name: 'About', href: '/about', withLogin: true, withLogout: true },
+    { name: 'Docs', href: '/docs', withLogin: true, withLogout: true },
+    { name: 'Infrastructure', href: '/infrastructure', withLogin: true, withLogout: true },
+    {
+      name: 'Sign In',
+      href: `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login?redirect_uri=${LOGIN_REDIRECT_URL}`,
+      withLogin: false,
+      withLogout: true,
+    },
+  ];
 
   const logoutMutation = useMutation({
     mutationFn: logout,
