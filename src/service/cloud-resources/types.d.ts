@@ -1,0 +1,3 @@
+type Resources = {
+  apiUrl: string;
+};

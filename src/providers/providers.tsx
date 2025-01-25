@@ -1,9 +1,11 @@
-"use client"
+'use client';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'sonner';
 
 import { NextUIProvider } from '@nextui-org/react';
+import { AuthenticationProvider } from './AuthProvider';
+import { Suspense } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,7 +31,11 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
           },
         }}
       />
-      <NextUIProvider>{children}</NextUIProvider>
+      <NextUIProvider>
+        <Suspense>
+          <AuthenticationProvider>{children}</AuthenticationProvider>
+        </Suspense>
+      </NextUIProvider>
     </QueryClientProvider>
   );
-}
+};
