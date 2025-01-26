@@ -18,7 +18,6 @@ type Customer = {
 
 type GetCustomersPayload = {
   pagination: Pagination;
-  accessToken: AccessToken;
 };
 
 type GetCustomersResponse = Customer[];

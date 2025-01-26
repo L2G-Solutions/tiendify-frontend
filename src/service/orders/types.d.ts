@@ -35,19 +35,16 @@ type Order = {
 
 type GetOrdersPayload = {
   pagination: Pagination;
-  accessToken: AccessToken;
 };
 
 type GetOrdersResponse = Order[];
 
 type GetOrderPayload = {
   orderId: string;
-  accessToken: AccessToken;
 };
 
 type GetOrderResponse = Order;
 
 type CancelOrderPayload = {
   orderId: number;
-  accessToken: AccessToken;
 };
