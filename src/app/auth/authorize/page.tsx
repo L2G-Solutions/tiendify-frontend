@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import useCurentUrl from '@/hooks/useCurentUrl';
 import { Spinner } from '@nextui-org/react';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function AuthorizePage() {
   return (
@@ -18,6 +19,8 @@ export default function AuthorizePage() {
 const AuthorizeLoginComponent = () => {
   const navigate = useRouter().push;
 
+  const { refetch } = useAuth();
+
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
 
@@ -29,19 +32,21 @@ const AuthorizeLoginComponent = () => {
     mutationFn: () => authorizeLogin(params, LOGIN_REDIRECT_URL),
     onSuccess: () => {
       const next_url = searchParams.get('next');
+      refetch();
       if (next_url) {
         navigate(next_url);
         return;
       }
-
       navigate('/dashboard');
     },
   });
 
   useEffect(() => {
-    authorizeMutation.mutate();
+    if (domainUrl) {
+      authorizeMutation.mutate();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [domainUrl]);
 
   return (
     <main className="flex flex-col items-center justify-center h-screen space-y-4">

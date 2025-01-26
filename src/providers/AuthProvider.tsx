@@ -1,11 +1,12 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from 'react-query';
 
 import { Spinner } from '@nextui-org/react';
 import { createContext } from 'react';
 import { getCurrentSession } from '@/service/auth';
+import { AxiosError } from 'axios';
 
 interface IAuthContextProps {
   children: React.ReactNode;
@@ -13,10 +14,8 @@ interface IAuthContextProps {
 
 interface IAuthContext {
   userData?: GetCurrentSessionResponse;
-  setUserData: (userData?: GetCurrentSessionResponse) => void;
+  setUserData: (userData: GetCurrentSessionResponse) => void;
   status: 'authenticated' | 'loading' | 'unauthenticated';
-  accessToken?: string;
-  refreshToken?: string;
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -26,39 +25,33 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({ children }
   const pathname = usePathname();
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-
-  const setUserData = (userData?: GetCurrentSessionResponse) => {
-    queryClient.setQueryData('getCurrentUser', userData);
+  const setUserData = (userData: GetCurrentSessionResponse) => {
+    queryClient.setQueryData('getUserData', userData);
   };
 
   const query = useQuery({
-    queryFn: async () => await getCurrentSession(window.localStorage.getItem('access_token') as string),
-    queryKey: 'getCurrentUser',
-    onSuccess: () => {
-      if (pathname === '/login') {
-        router.push('/dashboard');
+    queryFn: getCurrentSession,
+    queryKey: 'current-user',
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        if (pathname !== '/login') {
+          router.push('/login');
+        }
       }
     },
-    onError: () => {
-      window.localStorage.removeItem('access_token');
-      window.localStorage.removeItem('refresh_token');
+    onSuccess: () => {
+      if (pathname === '/login') {
+        router.push('/');
+      }
     },
-    enabled: typeof window !== 'undefined' && window.localStorage.getItem('access_token') !== null,
   });
-
-  if (searchParams.get('access_token') && window.localStorage.getItem('access_token') === null) {
-    window.localStorage.setItem('access_token', searchParams.get('access_token') as string);
-    window.localStorage.setItem('refresh_token', searchParams.get('refresh_token') as string);
-    query.refetch();
-  }
 
   return (
     <AuthContext.Provider
       value={{
         userData: query.data,
         setUserData,
-        status: query.data ? 'authenticated' : query.isLoading ? 'loading' : 'unauthenticated',
+        status: query.isSuccess ? 'authenticated' : query.isLoading ? 'loading' : 'unauthenticated',
       }}
     >
       {query.isLoading && (
@@ -66,7 +59,6 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({ children }
           <Spinner size="lg" />
         </div>
       )}
-      {pathname !== '/login' && query.isSuccess && children}
       {children}
     </AuthContext.Provider>
   );
