@@ -94,14 +94,16 @@ const NavBar = () => {
                 as="button"
                 className="transition-transform"
                 color="primary"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                src={
+                  userData?.shop?.[0]?.logoimg ??
+                  `https://eu.ui-avatars.com/api/?name=${userData?.first_name}+${userData?.last_name}&size=250`
+                }
                 showFallback
                 fallback={<IconUser size={24} />}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
-                {/* TODO: Update using session information with session hoook */}
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{userData?.first_name}</p>
               </DropdownItem>
