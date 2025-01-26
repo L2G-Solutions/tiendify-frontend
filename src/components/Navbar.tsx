@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import useCurentUrl from '@/hooks/useCurentUrl';
-import { logout } from '@/service/auth';
 import {
   Navbar,
   NavbarBrand,
@@ -19,7 +18,6 @@ import {
 } from '@nextui-org/react';
 import { IconUser } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { useMutation } from 'react-query';
 
 const NAVBAR_BUTTONS = [{ name: 'Sign Up', href: '/signup', withLogin: false, withLogout: true }];
 
@@ -38,7 +36,7 @@ const NAVBAR_LINKS = [
 const NavBar = () => {
   const router = useRouter();
 
-  const { status, userData, setUserData } = useAuth();
+  const { status, userData, logout } = useAuth();
 
   const { domainUrl } = useCurentUrl();
   const LOGIN_REDIRECT_URL = `${domainUrl}/auth/authorize`;
@@ -59,17 +57,6 @@ const NavBar = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [domainUrl]);
-
-  const logoutMutation = useMutation({
-    mutationFn: logout,
-  });
-
-  const handleLogout = () => {
-    if (window) {
-      setUserData(undefined);
-      logoutMutation.mutate();
-    }
-  };
 
   return (
     <Navbar className="py-1 [&>header]:max-w-full fixed" shouldHideOnScroll>
@@ -116,7 +103,7 @@ const NavBar = () => {
               <DropdownItem key="profile" className="h-14 gap-2">
                 {/* TODO: Update using session information with session hoook */}
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{userData?.user.firstName}</p>
+                <p className="font-semibold">{userData?.first_name}</p>
               </DropdownItem>
               <DropdownSection title="Settings">
                 {NAVBAR_DROPDOWN_SETTINGS.map(({ name, href }) => (
@@ -126,7 +113,7 @@ const NavBar = () => {
                 ))}
               </DropdownSection>
               <DropdownSection title="Account">
-                <DropdownItem key="logout" color="danger" onClick={handleLogout}>
+                <DropdownItem key="logout" color="danger" onClick={logout}>
                   Log Out
                 </DropdownItem>
               </DropdownSection>
