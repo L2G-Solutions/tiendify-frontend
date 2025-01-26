@@ -25,7 +25,7 @@ export default function APIIntegrationPage() {
       {isLoading && (
         <div className="flex flex-col items-center gap-4">
           <CircularProgress aria-label="Loading" />
-          <p className="text-center">Loading orders...</p>
+          <p className="text-center">Loading API details...</p>
         </div>
       )}
       {isSuccess && (

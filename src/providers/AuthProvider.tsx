@@ -3,7 +3,6 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { Spinner } from '@nextui-org/react';
 import { createContext } from 'react';
 import { getCurrentSession, logout } from '@/service/auth';
 import { AxiosError } from 'axios';
@@ -71,11 +70,6 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({ children }
         refetch: query.refetch,
       }}
     >
-      {query.isLoading && (
-        <div className="flex justify-center items-center w-screen h-screen">
-          <Spinner size="lg" />
-        </div>
-      )}
       {children}
     </AuthContext.Provider>
   );
