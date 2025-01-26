@@ -1,10 +1,14 @@
+import axios from 'axios';
+
+const API_URL = process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL;
+
+const fetcher = axios.create({
+  baseURL: API_URL + '/shops',
+  withCredentials: true,
+});
+
 export const getResources = async (): Promise<Resources> => {
-  // TODO: Implement API call to get resources
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve({
-        apiUrl: 'https://api.cloud-resources.com',
-      });
-    }, 1000)
-  );
+  return await (
+    await fetcher.get('/resources')
+  ).data;
 };
