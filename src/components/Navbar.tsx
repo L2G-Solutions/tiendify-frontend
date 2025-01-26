@@ -1,5 +1,5 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import useCurentUrl from '@/hooks/useCurentUrl';
 import { logout } from '@/service/auth';
@@ -28,6 +28,13 @@ const NAVBAR_DROPDOWN_SETTINGS = [
   { name: 'Preferences', href: '/settings/preferences' },
 ];
 
+const NAVBAR_LINKS = [
+  { name: 'About', href: '/about', withLogin: true, withLogout: true },
+  { name: 'Docs', href: '/docs', withLogin: true, withLogout: true },
+  { name: 'Infrastructure', href: '/infrastructure', withLogin: true, withLogout: true },
+  { name: 'Sign In', href: '', withLogin: false, withLogout: true },
+];
+
 const NavBar = () => {
   const router = useRouter();
 
@@ -35,17 +42,23 @@ const NavBar = () => {
 
   const { domainUrl } = useCurentUrl();
   const LOGIN_REDIRECT_URL = `${domainUrl}/auth/authorize`;
-  const NAVBAR_LINKS = [
-    { name: 'About', href: '/about', withLogin: true, withLogout: true },
-    { name: 'Docs', href: '/docs', withLogin: true, withLogout: true },
-    { name: 'Infrastructure', href: '/infrastructure', withLogin: true, withLogout: true },
-    {
-      name: 'Sign In',
-      href: `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login?redirect_uri=${LOGIN_REDIRECT_URL}`,
-      withLogin: false,
-      withLogout: true,
-    },
-  ];
+  const LOGIN_URL = `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login?redirect_uri=${LOGIN_REDIRECT_URL}`;
+
+  const [navbarLinks, setNavbarLinks] = useState(NAVBAR_LINKS);
+
+  useEffect(() => {
+    if (domainUrl) {
+      setNavbarLinks((prev) =>
+        prev.map((link) => {
+          if (link.name === 'Sign In') {
+            return { ...link, href: LOGIN_URL };
+          }
+          return link;
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [domainUrl]);
 
   const logoutMutation = useMutation({
     mutationFn: logout,
@@ -68,7 +81,7 @@ const NavBar = () => {
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end">
-        {NAVBAR_LINKS.map(({ name, href, withLogin, withLogout }) => {
+        {navbarLinks.map(({ name, href, withLogin, withLogout }) => {
           if ((status === 'authenticated' && !withLogin) || (status !== 'authenticated' && !withLogout)) return null;
           return (
             <NavbarItem key={name} className="px-2">

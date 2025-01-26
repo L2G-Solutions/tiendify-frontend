@@ -39,9 +39,11 @@ const AuthorizeLoginComponent = () => {
   });
 
   useEffect(() => {
-    authorizeMutation.mutate();
+    if (domainUrl) {
+      authorizeMutation.mutate();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [domainUrl]);
 
   return (
     <main className="flex flex-col items-center justify-center h-screen space-y-4">
