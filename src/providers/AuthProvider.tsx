@@ -33,7 +33,7 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({ children }
   };
 
   const query = useQuery({
-    queryFn: async () => await getCurrentSession(window.localStorage.getItem('access_token') as string),
+    queryFn: async () => await getCurrentSession(),
     queryKey: 'getCurrentUser',
     onSuccess: () => {
       if (pathname === '/login') {

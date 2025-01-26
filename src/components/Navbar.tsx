@@ -66,10 +66,8 @@ const NavBar = () => {
 
   const handleLogout = () => {
     if (window) {
-      window.localStorage.removeItem('access_token');
-      window.localStorage.removeItem('refresh_token');
       setUserData(undefined);
-      logoutMutation.mutate(window.localStorage.getItem('access_token') as string);
+      logoutMutation.mutate();
     }
   };
 
