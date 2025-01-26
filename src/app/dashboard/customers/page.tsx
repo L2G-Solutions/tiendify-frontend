@@ -1,6 +1,5 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
 import { getCustomers } from '@/service/customers';
 import {
   CircularProgress,
@@ -18,8 +17,6 @@ import { useQuery } from 'react-query';
 const PAGE_SIZE = 12;
 
 export default function CustomersPage() {
-  const { accessToken } = useAuth();
-
   const searchParams = useSearchParams();
   const page = searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));
   const { data, isLoading, isSuccess } = useQuery({
@@ -29,7 +26,6 @@ export default function CustomersPage() {
           offset: (page - 1) * PAGE_SIZE,
           limit: PAGE_SIZE,
         },
-        accessToken: accessToken ?? '',
       }),
     queryKey: 'customers',
   });

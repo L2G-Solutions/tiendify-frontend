@@ -21,5 +21,3 @@ type Pagination = {
   limit: number;
   offset: number;
 };
-
-type AccessToken = string;
