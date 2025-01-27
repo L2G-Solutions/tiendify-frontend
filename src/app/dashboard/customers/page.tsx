@@ -36,7 +36,7 @@ export default function CustomersPage() {
       {isLoading && (
         <div className="flex flex-col items-center gap-4">
           <CircularProgress aria-label="Loading" />
-          <p className="text-center">Loading orders...</p>
+          <p className="text-center">Loading customer details...</p>
         </div>
       )}
       {isSuccess && (
