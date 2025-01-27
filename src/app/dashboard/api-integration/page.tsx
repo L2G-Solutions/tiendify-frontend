@@ -1,9 +1,10 @@
 'use client';
 
-import { getResources } from '@/service/cloud-resources';
 import { CircularProgress, Link, Snippet } from '@nextui-org/react';
 import { IconInfoCircleFilled } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
+import { getResources } from '@/service/cloud-resources';
+import ApiKeysTable from '@/components/dashboard/api-keys/ApiKeysTable';
 
 const DOCS_PAGE_URL = process.env.NEXT_PUBLIC_DOCUMENTATION_URL;
 
@@ -41,6 +42,7 @@ export default function APIIntegrationPage() {
           </p>
         </>
       )}
+      <ApiKeysTable />
     </section>
   );
 }
