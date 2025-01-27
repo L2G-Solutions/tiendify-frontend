@@ -1,11 +1,7 @@
 import ProvisioningSteps from '@/components/provisioning/ProvisioningSteps';
 import { IconBell } from '@tabler/icons-react';
 
-interface IShopProvisioningPageProps {
-  params: { shopId: string };
-}
-
-const ShopProvisioningPage = async ({}: IShopProvisioningPageProps) => {
+const ShopProvisioningPage = () => {
   return (
     <main className="py-8 px-12 md:px-24 flex flex-col gap-4">
       <h1 className="font-bold">

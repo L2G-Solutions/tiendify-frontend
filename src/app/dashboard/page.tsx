@@ -13,7 +13,7 @@ export default function DashboardPage() {
         Here you can find general information about your shop.{' '}
         <Link href="/dashboard/shop-info/edit">Click here to edit your shop information.</Link>
       </p>
-      {userData?.shop && (
+      {userData?.shop && userData.shop.length > 0 && (
         <>
           <div className="flex gap-10 flex-wrap">
             <Card className="max-w-[600px]">
