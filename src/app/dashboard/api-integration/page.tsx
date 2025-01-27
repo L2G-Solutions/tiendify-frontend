@@ -9,6 +9,7 @@ const DOCS_PAGE_URL = process.env.NEXT_PUBLIC_DOCUMENTATION_URL;
 
 export default function APIIntegrationPage() {
   const { data, isLoading, isSuccess } = useQuery({
+    queryKey: 'api-resources',
     queryFn: getResources,
   });
 
