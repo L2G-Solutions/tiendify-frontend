@@ -1,4 +1,5 @@
 'use client';
+import { Progress } from '@nextui-org/react';
 import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 
@@ -7,6 +8,8 @@ interface IMultiStepProps {
     title: string;
     description: string;
     illustrationPath: string;
+    hideStepIndicator?: boolean;
+    isLoading?: boolean;
   }[];
   currentStep: number;
   setCurrentStep: (step: number) => void;
@@ -15,31 +18,35 @@ interface IMultiStepProps {
 interface IStepProps {
   step: number;
   stepOrder: number;
-  setStep: (step: number) => void;
   maxStep: number;
+  hideNext?: boolean;
 }
 
-const MultiStep = ({ steps, currentStep, setCurrentStep }: IMultiStepProps) => {
+const MultiStep = ({ steps, currentStep }: IMultiStepProps) => {
   return (
     <div className="w-full flex flex-col md:flex-row gap-8 items-center justify-between pt-6">
       <div className="flex-1 flex items-center justify-center gap-8">
         <div className="flex flex-col items-center gap-4">
-          {steps.map((_, index) => (
-            <Step
-              key={index + 1}
-              step={currentStep}
-              stepOrder={index + 1}
-              setStep={setCurrentStep}
-              maxStep={steps.length}
-            />
-          ))}
+          {steps.map((s, index) => {
+            if (s.hideStepIndicator) return null;
+            return (
+              <Step
+                key={index + 1}
+                step={currentStep}
+                stepOrder={index + 1}
+                maxStep={steps.length}
+                hideNext={steps[index + 1]?.hideStepIndicator}
+              />
+            );
+          })}
         </div>
         <div className="flex flex-col items-start justify- self-start gap-2 md:pr-12 mt-36">
           <div className="min-h-12 flex items">
             <h2 className="text-xl font-bold text-primary">{`Step ${currentStep}`}</h2>
           </div>
-          <h3 className="text-2xl font-bold">{steps[currentStep - 1].title}</h3>
+          <h3 className="text-2xl font-bold inline-flex gap-6 items-center">{steps[currentStep - 1].title}</h3>
           <p className="text-gray-700 mt-2">{steps[currentStep - 1].description}</p>
+          {steps[currentStep - 1].isLoading && <Progress className="mt-6" isIndeterminate size="sm" />}
         </div>
       </div>
       <div className="flex-1 flex justify-center">
@@ -49,20 +56,19 @@ const MultiStep = ({ steps, currentStep, setCurrentStep }: IMultiStepProps) => {
   );
 };
 
-const Step = ({ step, stepOrder, setStep, maxStep }: IStepProps) => {
+const Step = ({ step, stepOrder, maxStep, hideNext }: IStepProps) => {
   const isActive = step === stepOrder;
   const isComplete = step > stepOrder;
-  const showLine = stepOrder < maxStep;
+  const showLine = stepOrder < maxStep && !hideNext;
 
   return (
     <div className="flex items-start gap-4">
       <motion.button
-        onClick={() => setStep(stepOrder)}
         initial={false}
         animate={isActive ? 'active' : isComplete ? 'complete' : 'inactive'}
         variants={{
           inactive: { backgroundColor: '#fff' },
-          active: { backgroundColor: '#fff' },
+          active: { color: '#fff', backgroundColor: '#ff6591' },
           complete: { backgroundColor: '#ff6591' },
         }}
         transition={{ duration: 0.5 }}
