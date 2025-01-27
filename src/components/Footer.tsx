@@ -1,3 +1,4 @@
+import { getDocUrl } from '@/constants/docLinks';
 import { Button } from '@nextui-org/react';
 import {
   IconArticleFilled,
@@ -34,13 +35,13 @@ const Footer = () => {
           </section>
           <section className="flex flex-col gap-5">
             <h4 className="text-lg font-bold">Resources</h4>
-            <FooterLinkButton href="/blog">
-              <IconArticleFilled size={20} />
-              Blog
-            </FooterLinkButton>
-            <FooterLinkButton href="/docs">
+            <FooterLinkButton href={getDocUrl('docs')} newTab>
               <IconFileCode size={20} stroke={1.5} />
               Documentation
+            </FooterLinkButton>
+            <FooterLinkButton href={getDocUrl('blog')} newTab>
+              <IconArticleFilled size={20} />
+              Blog
             </FooterLinkButton>
           </section>
           <section className="flex flex-col gap-5">
@@ -64,13 +65,15 @@ const Footer = () => {
 type FooterLinkButton = {
   children: React.ReactNode;
   href: string;
+  newTab?: boolean;
 };
 
-const FooterLinkButton = ({ children, href }: FooterLinkButton) => {
+const FooterLinkButton = ({ children, href, newTab }: FooterLinkButton) => {
   return (
     <Link
       href={href}
       className="px-4 py-2 inline-flex gap-3 items-center rounded-lg hover:bg-primary-100 hover:text-primary transition-colors"
+      target={newTab ? '_blank' : undefined}
     >
       {children}
     </Link>

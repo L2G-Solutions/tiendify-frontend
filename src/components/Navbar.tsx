@@ -18,8 +18,9 @@ import {
 } from '@nextui-org/react';
 import { IconUser } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
+import { getDocUrl } from '@/constants/docLinks';
 
-const NAVBAR_BUTTONS = [{ name: 'Sign Up', href: '/signup', withLogin: false, withLogout: true }];
+const NAVBAR_BUTTONS = [{ name: 'Sign Up', href: '/auth/signup', withLogin: false, withLogout: true }];
 
 const NAVBAR_DROPDOWN_SETTINGS = [
   { name: 'Profile', href: '/settings/profile' },
@@ -27,9 +28,10 @@ const NAVBAR_DROPDOWN_SETTINGS = [
 ];
 
 const NAVBAR_LINKS = [
-  { name: 'About', href: '/about', withLogin: true, withLogout: true },
-  { name: 'Docs', href: '/docs', withLogin: true, withLogout: true },
-  { name: 'Infrastructure', href: '/infrastructure', withLogin: true, withLogout: true },
+  { name: 'About', href: '/', withLogin: false, withLogout: true },
+  { name: 'Dashboard', href: '/dashboard', withLogin: true, withLogout: false },
+  { name: 'Docs', href: getDocUrl('docs'), withLogin: true, withLogout: true },
+  { name: 'Infrastructure', href: getDocUrl('infraestructure'), withLogin: true, withLogout: true },
   { name: 'Sign In', href: '', withLogin: false, withLogout: true },
 ];
 
@@ -70,7 +72,7 @@ const NavBar = () => {
           if ((status === 'authenticated' && !withLogin) || (status !== 'authenticated' && !withLogout)) return null;
           return (
             <NavbarItem key={name} className="px-2">
-              <Link color="foreground" href={href}>
+              <Link color="foreground" href={href} target={href.startsWith('http') ? '_blank' : '_self'}>
                 {name}
               </Link>
             </NavbarItem>
