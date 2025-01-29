@@ -14,6 +14,8 @@ const ProvisioningSteps = () => {
     queryKey: 'cloud-resources',
     onSuccess: (data) => {
       if (currentStep === 1) {
+        setCurrentStep(2);
+      } else if (currentStep == 2 && data.authRealm) {
         setCurrentStep(3);
       } else if (currentStep === 3 && data.database) {
         setCurrentStep(4);
