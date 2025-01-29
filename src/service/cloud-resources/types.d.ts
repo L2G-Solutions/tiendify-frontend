@@ -3,4 +3,5 @@ type Resources = {
   database: boolean;
   api: boolean;
   storage: boolean;
+  authRealm: boolean
 };
