@@ -23,3 +23,7 @@ h3 {
   @apply bg-gray-300;
   @apply rounded-full;
 }
+
+html {
+  scroll-behavior: smooth;
+}

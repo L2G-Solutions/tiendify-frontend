@@ -1,11 +1,11 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useQuery, useQueryClient } from 'react-query';
+import { usePathname, useRouter } from 'next/navigation';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { Spinner } from '@nextui-org/react';
 import { createContext } from 'react';
-import { getCurrentSession } from '@/service/auth';
+import { getCurrentSession, logout } from '@/service/auth';
+import { AxiosError } from 'axios';
 
 interface IAuthContextProps {
   children: React.ReactNode;
@@ -13,10 +13,10 @@ interface IAuthContextProps {
 
 interface IAuthContext {
   userData?: GetCurrentSessionResponse;
-  setUserData: (userData?: GetCurrentSessionResponse) => void;
+  setUserData: (userData: GetCurrentSessionResponse) => void;
   status: 'authenticated' | 'loading' | 'unauthenticated';
-  accessToken?: string;
-  refreshToken?: string;
+  logout: () => void;
+  refetch: () => void;
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -26,47 +26,50 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({ children }
   const pathname = usePathname();
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-
-  const setUserData = (userData?: GetCurrentSessionResponse) => {
-    queryClient.setQueryData('getCurrentUser', userData);
+  const setUserData = (userData: GetCurrentSessionResponse | undefined) => {
+    queryClient.setQueryData('current-user', userData);
   };
 
   const query = useQuery({
-    queryFn: async () => await getCurrentSession(window.localStorage.getItem('access_token') as string),
-    queryKey: 'getCurrentUser',
-    onSuccess: () => {
-      if (pathname === '/login') {
-        router.push('/dashboard');
+    queryFn: getCurrentSession,
+    queryKey: 'current-user',
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 403 && pathname !== '/auth/authorize') {
+        const next = pathname;
+        const redirect_uri = window.location.origin + '/auth/authorize';
+        const searchParams = new URLSearchParams({
+          next,
+          redirect_uri,
+        });
+        window.location.href =
+          process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL + '/auth/public/login?' + searchParams.toString();
       }
     },
-    onError: () => {
-      window.localStorage.removeItem('access_token');
-      window.localStorage.removeItem('refresh_token');
+    onSuccess: () => {
+      if (pathname === '/login') {
+        router.push('/');
+      }
     },
-    enabled: typeof window !== 'undefined' && window.localStorage.getItem('access_token') !== null,
   });
 
-  if (searchParams.get('access_token') && window.localStorage.getItem('access_token') === null) {
-    window.localStorage.setItem('access_token', searchParams.get('access_token') as string);
-    window.localStorage.setItem('refresh_token', searchParams.get('refresh_token') as string);
-    query.refetch();
-  }
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.removeQueries('current-user');
+      router.push('/');
+    },
+  });
 
   return (
     <AuthContext.Provider
       value={{
         userData: query.data,
         setUserData,
-        status: query.data ? 'authenticated' : query.isLoading ? 'loading' : 'unauthenticated',
+        status: query.isSuccess ? 'authenticated' : query.isLoading ? 'loading' : 'unauthenticated',
+        logout: logoutMutation.mutate,
+        refetch: query.refetch,
       }}
     >
-      {query.isLoading && (
-        <div className="flex justify-center items-center w-screen h-screen">
-          <Spinner size="lg" />
-        </div>
-      )}
-      {pathname !== '/login' && query.isSuccess && children}
       {children}
     </AuthContext.Provider>
   );

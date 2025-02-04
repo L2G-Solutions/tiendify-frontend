@@ -1,7 +1,6 @@
 'use client';
 
 import { PaymentStatus } from '@/constants';
-import { useAuth } from '@/hooks/useAuth';
 import { cancelOrder, getOrder } from '@/service/orders';
 import { Button, Chip, CircularProgress, Link } from '@nextui-org/react';
 import { IconCreditCardFilled, IconTruckDelivery } from '@tabler/icons-react';
@@ -13,13 +12,10 @@ type OrderDetailsProps = {
 };
 
 export default function OrderPage({ params }: OrderDetailsProps) {
-  const { accessToken } = useAuth();
-
   const { data, isLoading, isSuccess, refetch } = useQuery({
     queryFn: async () =>
       await getOrder({
         orderId: params.orderId,
-        accessToken: accessToken ?? '',
       }),
     queryKey: ['order', params.orderId],
   });
@@ -59,7 +55,6 @@ export default function OrderPage({ params }: OrderDetailsProps) {
             color="danger"
             onClick={() =>
               cancelMutation.mutate({
-                accessToken: accessToken ?? '',
                 orderId: data.id,
               })
             }

@@ -1,7 +1,6 @@
 'use client';
 
 import { CircularProgress, Card, CardHeader, CardBody, CardFooter, Chip, Link } from '@nextui-org/react';
-import { useAuth } from '@/hooks/useAuth';
 import { getOrders } from '@/service/orders';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from 'react-query';
@@ -11,8 +10,6 @@ import { IconArrowRight, IconCreditCardFilled, IconTruckDelivery } from '@tabler
 const PAGE_SIZE = 12;
 
 export default function OrdersPage() {
-  const { accessToken } = useAuth();
-
   const searchParams = useSearchParams();
   const page = searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));
 
@@ -30,7 +27,6 @@ export default function OrdersPage() {
           limit: PAGE_SIZE,
           offset: (page - 1) * PAGE_SIZE,
         },
-        accessToken: accessToken ?? '',
       }),
     queryKey: ['orders'],
   });

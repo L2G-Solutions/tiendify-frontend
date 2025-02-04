@@ -4,6 +4,7 @@ const API_URL = process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL;
 
 const fetcher = axios.create({
   baseURL: API_URL + '/products',
+  withCredentials: true,
 });
 
 export const getProductById = async ({ productId }: getProductPayload): Promise<TProduct> => {

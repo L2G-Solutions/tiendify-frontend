@@ -1,7 +1,7 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { logout } from '@/service/auth';
+import useCurentUrl from '@/hooks/useCurentUrl';
 import {
   Navbar,
   NavbarBrand,
@@ -18,56 +18,61 @@ import {
 } from '@nextui-org/react';
 import { IconUser } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { useMutation } from 'react-query';
+import { getDocUrl } from '@/constants/docLinks';
 
-const NAVBAR_LINKS = [
-  { name: 'About', href: '/about', withLogin: true, withLogout: true },
-  { name: 'Docs', href: '/docs', withLogin: true, withLogout: true },
-  { name: 'Infrastructure', href: '/infrastructure', withLogin: true, withLogout: true },
-  {
-    name: 'Sign In',
-    href: `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login`,
-    withLogin: false,
-    withLogout: true,
-  },
-];
-
-const NAVBAR_BUTTONS = [{ name: 'Sign Up', href: '/signup', withLogin: false, withLogout: true }];
+const NAVBAR_BUTTONS = [{ name: 'Sign Up', href: '/auth/signup', withLogin: false, withLogout: true }];
 
 const NAVBAR_DROPDOWN_SETTINGS = [
   { name: 'Profile', href: '/settings/profile' },
   { name: 'Preferences', href: '/settings/preferences' },
 ];
 
+const NAVBAR_LINKS = [
+  { name: 'About', href: '/', withLogin: false, withLogout: true },
+  { name: 'Dashboard', href: '/dashboard', withLogin: true, withLogout: false },
+  { name: 'Docs', href: getDocUrl('docs'), withLogin: true, withLogout: true },
+  { name: 'Infrastructure', href: getDocUrl('infraestructure'), withLogin: true, withLogout: true },
+  { name: 'Sign In', href: '', withLogin: false, withLogout: true },
+];
+
 const NavBar = () => {
   const router = useRouter();
 
-  const { status, userData, setUserData } = useAuth();
+  const { status, userData, logout } = useAuth();
 
-  const logoutMutation = useMutation({
-    mutationFn: logout,
-  });
+  const { domainUrl } = useCurentUrl();
+  const LOGIN_REDIRECT_URL = `${domainUrl}/auth/authorize`;
+  const LOGIN_URL = `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login?redirect_uri=${LOGIN_REDIRECT_URL}`;
 
-  const handleLogout = () => {
-    if (window) {
-      window.localStorage.removeItem('access_token');
-      window.localStorage.removeItem('refresh_token');
-      setUserData(undefined);
-      logoutMutation.mutate(window.localStorage.getItem('access_token') as string);
+  const [navbarLinks, setNavbarLinks] = useState(NAVBAR_LINKS);
+
+  useEffect(() => {
+    if (domainUrl) {
+      setNavbarLinks((prev) =>
+        prev.map((link) => {
+          if (link.name === 'Sign In') {
+            return { ...link, href: LOGIN_URL };
+          }
+          return link;
+        })
+      );
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [domainUrl]);
 
   return (
     <Navbar className="py-1 [&>header]:max-w-full fixed" shouldHideOnScroll>
       <NavbarBrand>
-        <h2 className="text-primary font-bold">Tiendify 🛍️</h2>
+        <Link href="/">
+          <h2 className="text-primary font-bold">Tiendify 🛍️</h2>
+        </Link>
       </NavbarBrand>
       <NavbarContent justify="end">
-        {NAVBAR_LINKS.map(({ name, href, withLogin, withLogout }) => {
+        {navbarLinks.map(({ name, href, withLogin, withLogout }) => {
           if ((status === 'authenticated' && !withLogin) || (status !== 'authenticated' && !withLogout)) return null;
           return (
             <NavbarItem key={name} className="px-2">
-              <Link color="foreground" href={href}>
+              <Link color="foreground" href={href} target={href.startsWith('http') ? '_blank' : '_self'}>
                 {name}
               </Link>
             </NavbarItem>
@@ -91,16 +96,18 @@ const NavBar = () => {
                 as="button"
                 className="transition-transform"
                 color="primary"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                src={
+                  userData?.shop?.[0]?.logoimg ??
+                  `https://eu.ui-avatars.com/api/?name=${userData?.first_name}+${userData?.last_name}&size=250`
+                }
                 showFallback
                 fallback={<IconUser size={24} />}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
-                {/* TODO: Update using session information with session hoook */}
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{userData?.user.firstName}</p>
+                <p className="font-semibold">{userData?.first_name}</p>
               </DropdownItem>
               <DropdownSection title="Settings">
                 {NAVBAR_DROPDOWN_SETTINGS.map(({ name, href }) => (
@@ -110,7 +117,7 @@ const NavBar = () => {
                 ))}
               </DropdownSection>
               <DropdownSection title="Account">
-                <DropdownItem key="logout" color="danger" onClick={handleLogout}>
+                <DropdownItem key="logout" color="danger" onClick={logout}>
                   Log Out
                 </DropdownItem>
               </DropdownSection>

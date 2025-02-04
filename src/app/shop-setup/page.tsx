@@ -1,12 +1,32 @@
 'use client';
 import { Globe } from '@/components/Globe';
 import { RESOURCE_REGIONS, SHOP_COUNTRIES, SHOP_CURRENCIES, SHOP_LANGUAGES } from '@/constants/config';
+import { createShop } from '@/service/shops';
 import { Avatar, Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { IconBuildingStore } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
 
 const ShopSetupPage = () => {
-  const [resourceRegion, setResourceRegion] = useState<string>('');
+  const [formData, setFormData] = useState({
+    shopName: '',
+    shopDescription: '',
+    shopLocation: '',
+    shopCurrency: '',
+    shopResourceRegion: '',
+  });
+
+  const router = useRouter();
+
+  const { shopName, shopDescription, shopLocation, shopCurrency } = formData;
+
+  const createShopMutation = useMutation({
+    mutationFn: createShop,
+    onSuccess: () => {
+      router.push('/shop-setup/provisioning');
+    },
+  });
 
   return (
     <main className="px-12 py-8 flex flex-col gap-4">
@@ -24,6 +44,8 @@ const ShopSetupPage = () => {
               labelPlacement="outside"
               size="lg"
               isRequired
+              value={shopName}
+              onChange={(e) => setFormData({ ...formData, shopName: e.target.value })}
             />
             <Textarea
               label="Shop description"
@@ -32,6 +54,8 @@ const ShopSetupPage = () => {
               labelPlacement="outside"
               size="lg"
               isRequired
+              value={shopDescription}
+              onChange={(e) => setFormData({ ...formData, shopDescription: e.target.value })}
             />
             <Select
               label="Shop location"
@@ -40,6 +64,8 @@ const ShopSetupPage = () => {
               labelPlacement="outside"
               size="lg"
               isRequired
+              value={shopLocation}
+              onChange={(e) => setFormData({ ...formData, shopLocation: e.target.value })}
             >
               {SHOP_COUNTRIES.map((country) => (
                 <SelectItem
@@ -60,8 +86,8 @@ const ShopSetupPage = () => {
               description="Choose the closest region to your shop location"
               size="lg"
               isRequired
-              value={resourceRegion}
-              onChange={(e) => setResourceRegion(e.target.value)}
+              value={formData.shopResourceRegion}
+              onChange={(e) => setFormData({ ...formData, shopResourceRegion: e.target.value })}
             >
               {RESOURCE_REGIONS.map((region) => (
                 <SelectItem key={region.key}>{region.label}</SelectItem>
@@ -74,6 +100,8 @@ const ShopSetupPage = () => {
               labelPlacement="outside"
               size="lg"
               isRequired
+              value={shopCurrency}
+              onChange={(e) => setFormData({ ...formData, shopCurrency: e.target.value })}
             >
               {SHOP_CURRENCIES.map((currency) => (
                 <SelectItem key={currency.key}>{currency.label}</SelectItem>
@@ -93,7 +121,19 @@ const ShopSetupPage = () => {
             </Select>
             <div className="flex justify-end gap-4">
               <Button color="default">Cancel</Button>
-              <Button color="primary" startContent={<IconBuildingStore size={20} />}>
+              <Button
+                color="primary"
+                startContent={<IconBuildingStore size={20} />}
+                isLoading={createShopMutation.isLoading}
+                onClick={() => {
+                  createShopMutation.mutate({
+                    name: formData.shopName,
+                    about: formData.shopDescription,
+                    country: formData.shopLocation,
+                    currency: formData.shopCurrency,
+                  });
+                }}
+              >
                 Create Shop
               </Button>
             </div>
@@ -108,8 +148,8 @@ const ShopSetupPage = () => {
               })),
             }}
             selectedMarker={{
-              latitude: RESOURCE_REGIONS.find((region) => region.key === resourceRegion)?.latitude || 0,
-              longitude: RESOURCE_REGIONS.find((region) => region.key === resourceRegion)?.longitude || 0,
+              latitude: RESOURCE_REGIONS.find((region) => region.key === formData.shopResourceRegion)?.latitude || 0,
+              longitude: RESOURCE_REGIONS.find((region) => region.key === formData.shopResourceRegion)?.longitude || 0,
             }}
           />
         </div>
