@@ -24,3 +24,7 @@ export const authorizeLogin = async (queryParams: URLSearchParams, validation_ur
     })
   ).data;
 };
+
+export const signup = async (data: SignUpPayload): Promise<User> => {
+  return (await fetcher.post('/public/signup', data)).data;
+};

@@ -45,9 +45,12 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({ children }
           process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL + '/auth/public/login?' + searchParams.toString();
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       if (pathname === '/login') {
         router.push('/');
+      }
+      if (!data.shop) {
+        router.push('/shop-setup');
       }
     },
   });
