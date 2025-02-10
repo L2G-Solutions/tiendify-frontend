@@ -18,7 +18,11 @@ export const getShopProducts = async ({
 }: getProductsPayload): Promise<getProductsResponse> => {
   return (
     await fetcher.get('/', {
-      params: { page, size, search: searchQuery },
+      params: {
+        limit: size,
+        offset: (page - 1) * size,
+        search: searchQuery,
+      },
     })
   ).data;
 };
