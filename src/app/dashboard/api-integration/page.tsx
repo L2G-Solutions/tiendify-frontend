@@ -5,8 +5,7 @@ import { IconInfoCircleFilled } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { getResources } from '@/service/cloud-resources';
 import ApiKeysTable from '@/components/dashboard/api-keys/ApiKeysTable';
-
-const DOCS_PAGE_URL = process.env.NEXT_PUBLIC_DOCUMENTATION_URL;
+import { getDocUrl } from '@/constants/docLinks';
 
 export default function APIIntegrationPage() {
   const { data, isLoading, isSuccess } = useQuery({
@@ -38,7 +37,7 @@ export default function APIIntegrationPage() {
           <Snippet>{`curl ${data.apiUrl}/health`}</Snippet>
           <p>
             For more information about how to interact with the API, visit the{' '}
-            <Link href={DOCS_PAGE_URL}>API Reference Documentation</Link>.
+            <Link href={getDocUrl('docs')}>API Reference Documentation</Link>.
           </p>
         </>
       )}
