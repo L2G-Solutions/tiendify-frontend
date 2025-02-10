@@ -1,14 +1,29 @@
 'use client';
 import ProductsForm from '@/components/dashboard/products/ProductsForm';
-import { createProduct } from '@/service/products';
+import { createProduct, uploadProductImage } from '@/service/products';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 import { toast } from 'sonner';
 
 const ProductCreatePage = () => {
   const router = useRouter();
+  const uploadProductImageMutation = useMutation({
+    mutationFn: uploadProductImage,
+    onSuccess: () => {
+      toast.success('Image uploaded successfully');
+    },
+  });
 
-  const createProductMutation = useMutation(createProduct, {
+  const createProductMutation = useMutation({
+    mutationFn: async ({ mediafiles, product }: { product: createProductPayload; mediafiles: File[] }) => {
+      const prod = await createProduct(product);
+
+      mediafiles.forEach((file) => {
+        uploadProductImageMutation.mutate({ productId: prod.id, image: file });
+      });
+
+      return prod;
+    },
     onSuccess: (product) => {
       toast.success('Product created successfully');
       router.push(`/dashboard/products/${product.id}`);
@@ -27,8 +42,11 @@ const ProductCreatePage = () => {
       </p>
       <main className="mt-4">
         <ProductsForm
-          onSubmit={(product) => {
-            createProductMutation.mutate(product as createProductPayload);
+          onSubmit={(product, mediafileImages) => {
+            createProductMutation.mutate({
+              product: product as createProductPayload,
+              mediafiles: mediafileImages,
+            });
           }}
         />
       </main>
