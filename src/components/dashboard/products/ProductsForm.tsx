@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 
 interface IProductsFormProps {
   product?: Partial<TProduct>;
-  onSubmit: (product: createProductPayload | editProductPayload) => void;
+  onSubmit: (product: createProductPayload | editProductPayload, mediafiles: File[]) => void;
 }
 
 const MAX_MEDIA_FILES = 5;
@@ -67,7 +67,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
         isHidden: !isPublicProduct,
       },
     };
-    onSubmit(PayloadProduct);
+    onSubmit(PayloadProduct, formData.getAll('mediafiles') as File[]);
   };
 
   const handleCancel = () => {

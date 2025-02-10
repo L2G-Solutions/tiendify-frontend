@@ -18,7 +18,11 @@ export const getShopProducts = async ({
 }: getProductsPayload): Promise<getProductsResponse> => {
   return (
     await fetcher.get('/', {
-      params: { page, size, search: searchQuery },
+      params: {
+        limit: size,
+        offset: (page - 1) * size,
+        search: searchQuery,
+      },
     })
   ).data;
 };
@@ -103,4 +107,11 @@ export const createProductCategory = async ({ category }: createProductCategoryP
       });
     }, 1500);
   });
+};
+
+export const uploadProductImage = async ({ productId, image }: uploadProductImagePayload) => {
+  const formData = new FormData();
+  formData.append('image', image);
+
+  return (await fetcher.post(`/${productId}/mediafile`, formData)).data;
 };

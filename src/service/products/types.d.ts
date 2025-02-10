@@ -45,3 +45,8 @@ type duplicateProductPayload = {
 type createProductCategoryPayload = {
   category: Omit<TProductCategory, 'id'>;
 };
+
+type uploadProductImagePayload = {
+  productId: string;
+  image: File;
+};
