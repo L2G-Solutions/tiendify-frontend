@@ -16,6 +16,12 @@ import { useQuery } from 'react-query';
 
 const PAGE_SIZE = 12;
 
+/**
+ * This page is used to display the list of customers in the shop.
+ * Displays a paginated list of customers, including their contact details and account creation date.
+ *
+ * @returns {JSX.Element} The customers page layout.
+ */
 export default function CustomersPage() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));

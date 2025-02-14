@@ -14,6 +14,17 @@ interface IProductDetailsPageProps {
   params: { productId: string };
 }
 
+/**
+ * Displays detailed information about a specific product.
+ *
+ * It fetches the product data using the API call, and renders various details including the product's name,
+ * description, price, stock status, categories, and images. The component allows users to interact with the
+ * product by providing actions to edit, duplicate, or delete the product. It also includes functionality to
+ * display the visibility status of the product, and handles various states such as loading and errors.
+ *
+ * @param {IProductDetailsPageProps} params - Contains the product ID derived from the URL.
+ * @returns {JSX.Element} The rendered product details UI.
+ */
 const ProductDetailsPage = ({ params }: IProductDetailsPageProps) => {
   const router = useRouter();
 

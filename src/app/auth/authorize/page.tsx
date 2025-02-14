@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 import { authorizeLogin } from '@/service/auth';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import useCurentUrl from '@/hooks/useCurentUrl';
+import useCurrentUrl from '@/hooks/useCurrentUrl';
 import { Spinner } from '@nextui-org/react';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -24,7 +24,7 @@ const AuthorizeLoginComponent = () => {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
 
-  const { domainUrl } = useCurentUrl();
+  const { domainUrl } = useCurrentUrl();
   const LOGIN_REDIRECT_URL = `${domainUrl}/auth/authorize`;
 
   params.append('redirect_uri', LOGIN_REDIRECT_URL);

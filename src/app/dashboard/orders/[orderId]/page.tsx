@@ -11,6 +11,13 @@ type OrderDetailsProps = {
   params: { orderId: string };
 };
 
+/**
+ * This page displays the details of a specific order made by a customer.
+ * It includes information about the shipping status, payment details, and customer contact information.
+ *
+ * @param {OrderDetailsProps} props - The order details page props.
+ * @returns {JSX.Element} The order details page layout.
+ */
 export default function OrderPage({ params }: OrderDetailsProps) {
   const { data, isLoading, isSuccess, refetch } = useQuery({
     queryFn: async () =>
