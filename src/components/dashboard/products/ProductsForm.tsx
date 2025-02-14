@@ -1,7 +1,18 @@
 'use client';
 import { getProductCategories } from '@/service/products';
 import { validateFiles } from '@/utils/validation';
-import { Select, SelectItem, Button, Chip, Input, Textarea, SelectedItems, Selection, Switch } from '@nextui-org/react';
+import {
+  Select,
+  SelectItem,
+  Button,
+  Chip,
+  Input,
+  Textarea,
+  SelectedItems,
+  Selection,
+  Switch,
+  Form,
+} from '@nextui-org/react';
 import { IconCategory2, IconChecks, IconPhotoSpark, IconSparkles, IconStack, IconWriting } from '@tabler/icons-react';
 import { FormEvent, FormEventHandler, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -76,7 +87,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
 
   // TODO: Detect shop currency to set the correct currency symbol
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4" ref={productForm}>
+    <Form validationBehavior="native" onSubmit={handleSubmit} className="flex flex-col gap-4" ref={productForm}>
       <div className="flex gap-4">
         <Input
           type="text"
@@ -88,8 +99,9 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
           description="This name will be displayed in the store."
           variant="faded"
           defaultValue={product?.name}
+          minLength={3}
+          maxLength={100}
           isRequired
-          required
         />
         <Switch
           className="w-full"
@@ -110,6 +122,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
         placeholder="Description"
         description="Include details about the product."
         variant="faded"
+        maxLength={1000}
         defaultValue={product?.description}
       />
       <Input
@@ -137,7 +150,6 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
           min={0}
           defaultValue={product?.price?.toString()}
           isRequired
-          required
         />
         <Input
           type="number"
@@ -151,7 +163,6 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
           min={0}
           defaultValue={product?.stock?.toString()}
           isRequired
-          required
         />
       </div>
       <Select
@@ -201,7 +212,7 @@ const ProductsForm = ({ product, onSubmit }: IProductsFormProps) => {
           Save changes
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 
