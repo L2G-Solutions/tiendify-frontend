@@ -7,10 +7,22 @@ const fetcher = axios.create({
   withCredentials: true,
 });
 
+/**
+ * Retrieves a product by its ID.
+ * @param productId - Unique identifier of the product
+ * @returns The matching product
+ */
 export const getProductById = async ({ productId }: getProductPayload): Promise<TProduct> => {
   return (await fetcher.get(`/${productId}`)).data;
 };
 
+/**
+ * Fetches a paginated list of products matching a query.
+ * @param page - Current page
+ * @param size - Number of items per page
+ * @param searchQuery - Query to filter products
+ * @returns A list of products and pagination details
+ */
 export const getShopProducts = async ({
   page,
   size,
@@ -27,19 +39,39 @@ export const getShopProducts = async ({
   ).data;
 };
 
+/**
+ * Creates a new product with provided details.
+ * @param product - Product data
+ * @returns The newly created product
+ */
 export const createProduct = async ({ product }: createProductPayload): Promise<TProduct> => {
   return (await fetcher.post('/', product)).data;
 };
 
+/**
+ * Updates an existing product with new details.
+ * @param productId - The product's unique identifier
+ * @param product - Updated fields
+ * @returns The updated product
+ */
 export const editProduct = async ({ productId, product }: editProductPayload): Promise<TProduct> => {
   return (await fetcher.put(`/${productId}`, product)).data;
 };
 
+/**
+ * Removes a product permanently by its ID.
+ * @param productId - The product's unique identifier
+ */
 export const deleteProduct = async ({ productId }: deleteProductPayload): Promise<void> => {
   await fetcher.delete(`/${productId}`);
 };
 
-// TODO: Implement the corresponding service functions
+/**
+ * Updates product visibility (hidden or visible).
+ * @param productId - The product's unique identifier
+ * @param isHidden - Whether the product is hidden
+ * @returns The updated product
+ */
 export const toggleProductVisibility = async ({
   productId,
   isHidden,
@@ -47,6 +79,11 @@ export const toggleProductVisibility = async ({
   return (await fetcher.patch(`/${productId}/visibility`, { hidden: isHidden })).data;
 };
 
+/**
+ * Creates a duplicate of an existing product.
+ * @param productId - The ID of the product to duplicate
+ * @returns The duplicated product
+ */
 export const duplicateProduct = async ({ productId }: duplicateProductPayload): Promise<TProduct> => {
   const product = await getProductById({ productId });
 
@@ -66,7 +103,10 @@ export const duplicateProduct = async ({ productId }: duplicateProductPayload): 
   });
 };
 
-// TODO: Implement the corresponding service functions
+/**
+ * Retrieves all product categories.
+ * @returns A list of available product categories
+ */
 export const getProductCategories = async (): Promise<TProductCategory[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -96,9 +136,13 @@ export const getProductCategories = async (): Promise<TProductCategory[]> => {
   });
 };
 
-// TODO: Implement the corresponding service functions
+/**
+ * Creates a new category with the provided data.
+ * @param category - Category details
+ * @returns The newly created product category
+ */
 export const createProductCategory = async ({ category }: createProductCategoryPayload): Promise<TProductCategory> => {
-  console.log('Creating category...', category);
+  // TODO: Implement API call to create a new category
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -109,6 +153,12 @@ export const createProductCategory = async ({ category }: createProductCategoryP
   });
 };
 
+/**
+ * Uploads a product image for the specified product.
+ * @param productId - The product's ID
+ * @param image - The image file to upload
+ * @returns Response data from the upload
+ */
 export const uploadProductImage = async ({ productId, image }: uploadProductImagePayload) => {
   const formData = new FormData();
   formData.append('image', image);
