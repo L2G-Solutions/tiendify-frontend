@@ -2,6 +2,15 @@
 
 import { useState, useEffect } from 'react';
 
+/**
+ * Custom hook to retrieve the current URL and domain URL.
+ *
+ * @returns {Object} An object containing:
+ *   - `currentUrl` (string): The full current URL.
+ *   - `domainUrl` (string): The origin (domain) of the current URL.
+ *
+ * This hook updates whenever the URL changes due to navigation events.
+ */
 const useCurrentUrl = () => {
   const [currentUrl, setCurrentUrl] = useState('');
   const [domainUrl, setDomainUrl] = useState('');
