@@ -15,6 +15,19 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+/**
+ * Layout component for the entire application.
+ *
+ * - Sets global metadata for SEO.
+ * - Applies the Inter font and global styles.
+ * - Wraps the app with `Providers` to manage context and state.
+ * - Includes `NavBar` and `Footer` for consistent navigation.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The main content of the page.
+ *
+ * @returns {JSX.Element} The root layout structure.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
