@@ -2,7 +2,7 @@
 import { Globe } from '@/components/Globe';
 import { RESOURCE_REGIONS, SHOP_COUNTRIES, SHOP_CURRENCIES, SHOP_LANGUAGES } from '@/constants/config';
 import { createShop } from '@/service/shops';
-import { Avatar, Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
+import { Avatar, Button, Form, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { IconBuildingStore } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -47,16 +47,30 @@ const ShopSetupPage = () => {
       <p className="mb-4">Configure your shop settings and start selling your products online.</p>
       <div className="flex flex-col-reverse justify-between mt-6 md:flex-row">
         <div className="flex-1 max-w-[650px]">
-          <form className="flex flex-col gap-6 px-8">
+          <Form
+            validationBehavior="native"
+            className="flex flex-col gap-6 px-8"
+            onSubmit={(e) => {
+              e.preventDefault();
+              createShopMutation.mutate({
+                name: formData.shopName,
+                about: formData.shopDescription,
+                country: formData.shopLocation,
+                currency: formData.shopCurrency,
+              });
+            }}
+          >
             <Input
               label="Shop name"
               variant="faded"
               placeholder="Enter your shop name"
               labelPlacement="outside"
               size="lg"
-              isRequired
               value={shopName}
               onChange={(e) => setFormData({ ...formData, shopName: e.target.value })}
+              minLength={3}
+              maxLength={50}
+              isRequired
             />
             <Textarea
               label="Shop description"
@@ -66,6 +80,8 @@ const ShopSetupPage = () => {
               size="lg"
               isRequired
               value={shopDescription}
+              minLength={10}
+              maxLength={500}
               onChange={(e) => setFormData({ ...formData, shopDescription: e.target.value })}
             />
             <Select
@@ -133,22 +149,15 @@ const ShopSetupPage = () => {
             <div className="flex justify-end gap-4">
               <Button color="default">Cancel</Button>
               <Button
+                type="submit"
                 color="primary"
-                startContent={<IconBuildingStore size={20} />}
+                startContent={!createShopMutation.isLoading && <IconBuildingStore size={20} />}
                 isLoading={createShopMutation.isLoading}
-                onClick={() => {
-                  createShopMutation.mutate({
-                    name: formData.shopName,
-                    about: formData.shopDescription,
-                    country: formData.shopLocation,
-                    currency: formData.shopCurrency,
-                  });
-                }}
               >
                 Create Shop
               </Button>
             </div>
-          </form>
+          </Form>
         </div>
         <div className="flex-1 -mt-8">
           <Globe

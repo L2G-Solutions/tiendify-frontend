@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Input, Button, Card, CardBody } from '@nextui-org/react';
+import { Input, Button, Card, CardBody, Form } from '@nextui-org/react';
 import { useMutation } from 'react-query';
 import { signup } from '@/service/auth';
 import { toast } from 'sonner';
@@ -41,6 +41,10 @@ export default function SignUpPage() {
   });
 
   const handleSubmit = () => {
+    if (form.password !== form.passwordConfirm) {
+      toast.error('Passwords do not match!');
+      return;
+    }
     signupMutation.mutate(form);
   };
 
@@ -50,16 +54,33 @@ export default function SignUpPage() {
         <CardBody className="p-8">
           <h1 className="text-2xl font-bold mb-2 text-center">Sign Up</h1>
           <p className="text-gray-600 text-center mb-6">Create a new account</p>
-          <form className="flex flex-col gap-4">
-            <Input label="Username" name="username" value={form.username} onChange={handleChange} required />
-            <Input label="Email" type="email" name="email" value={form.email} onChange={handleChange} required />
+          <Form
+            validationBehavior="native"
+            className="flex flex-col gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <Input
+              label="Username"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              minLength={3}
+              maxLength={50}
+              isRequired
+            />
+            <Input label="Email" type="email" name="email" value={form.email} onChange={handleChange} isRequired />
             <Input
               label="Password"
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
-              required
+              minLength={8}
+              maxLength={50}
+              isRequired
             />
             <Input
               label="Confirm Password"
@@ -67,21 +88,49 @@ export default function SignUpPage() {
               name="passwordConfirm"
               value={form.passwordConfirm}
               onChange={handleChange}
-              required
+              minLength={8}
+              maxLength={50}
+              isRequired
             />
-            <Input label="First Name" name="firstName" value={form.firstName} onChange={handleChange} required />
-            <Input label="Last Name" name="lastName" value={form.lastName} onChange={handleChange} required />
-            <Input label="Phone" type="tel" name="phone" value={form.phone} onChange={handleChange} required />
+            <Input
+              label="First Name"
+              name="firstName"
+              value={form.firstName}
+              onChange={handleChange}
+              minLength={3}
+              maxLength={50}
+              isRequired
+            />
+            <Input
+              label="Last Name"
+              name="lastName"
+              value={form.lastName}
+              onChange={handleChange}
+              minLength={3}
+              maxLength={50}
+              isRequired
+            />
+            <Input
+              label="Phone"
+              type="tel"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              minLength={10}
+              maxLength={15}
+              isRequired
+            />
             <Button
+              type="submit"
               color="primary"
               isDisabled={
                 !form.username || !form.email || !form.password || !form.firstName || !form.lastName || !form.phone
               }
-              onClick={handleSubmit}
+              className="self-center"
             >
               Sign Up
             </Button>
-          </form>
+          </Form>
         </CardBody>
       </Card>
     </main>
