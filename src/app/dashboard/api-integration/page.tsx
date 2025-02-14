@@ -6,7 +6,14 @@ import { useQuery } from 'react-query';
 import { getResources } from '@/service/cloud-resources';
 import ApiKeysTable from '@/components/dashboard/api-keys/ApiKeysTable';
 import { getDocUrl } from '@/constants/docLinks';
-
+/**
+ * This page provides developers with the necessary information to integrate a shop with custom applications via API.
+ * It displays API connection details, the table of API keys for the shop, ant the possibility to manage them.
+ *
+ * The API Keys of this page are defined only for admin tasks, such as creating, updating, and deleting products.
+ *
+ * @returns {JSX.Element} The API Integration page.
+ */
 export default function APIIntegrationPage() {
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: 'api-resources',

@@ -1,5 +1,14 @@
 import Link from 'next/link';
 
+/**
+ * This page customizes the 404 error page, to provide a better user experience.
+ * It should be used as a fallback for any unknown routes in the application.
+ *
+ * - Displays an error message when a requested resource is not found.
+ * - Provides a link to navigate back to the homepage.
+ *
+ * @returns {JSX.Element} The not found page UI.
+ */
 export default async function NotFoundPage() {
   return (
     <section className="px-20">

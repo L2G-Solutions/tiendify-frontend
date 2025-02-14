@@ -16,6 +16,14 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * This provider component is a wrapper that integrates several essential providers and configurations for the application.
+ * It ensures that the child components have access to all the necessary global configurations and context providers, such as
+ * the UI theme provider, authentication provider, and the query client.
+ *
+ * @param {React.ReactNode} children The child components to be wrapped by the provider.
+ * @return {JSX.Element} The provider component.
+ */
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>

@@ -7,6 +7,10 @@ const fetcher = axios.create({
   withCredentials: true,
 });
 
+/**
+ * Retrieves cloud resources details for the current shop.
+ * @returns The resource usage details
+ */
 export const getResources = async (): Promise<Resources> => {
   return await (
     await fetcher.get('/resources')

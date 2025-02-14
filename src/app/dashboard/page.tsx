@@ -4,6 +4,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button, Card, CardBody, CardFooter, CardHeader, Chip, Divider, Image, Link } from '@nextui-org/react';
 import { IconChecks, IconMailFilled, IconPointFilled } from '@tabler/icons-react';
 
+/**
+ * Dashboard page displaying shop information and email verification status.
+ *
+ * - Displays shop details including name, logo, banner, and links.
+ * - Shows email verification status and provides an option to resend the verification email.
+ *
+ * @returns {JSX.Element} The dashboard page UI.
+ */
 export default function DashboardPage() {
   const { userData } = useAuth();
   return (

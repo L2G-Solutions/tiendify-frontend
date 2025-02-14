@@ -9,6 +9,13 @@ import { IconArrowRight, IconCreditCardFilled, IconTruckDelivery } from '@tabler
 
 const PAGE_SIZE = 12;
 
+/**
+ * In this page the shop owner can view a list of orders made by customers.
+ * The orders also include information about the payment status and shipping details.
+ * The orders are paginated to improve the user experience.
+ *
+ * @returns {JSX.Element} The orders page layout.
+ */
 export default function OrdersPage() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page') === null ? 1 : Number(searchParams.get('page'));

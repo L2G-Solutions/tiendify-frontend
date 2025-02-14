@@ -8,6 +8,17 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 
+/**
+ * The page is designed to help users configure their new online shop.
+ * It provides a form where users can input essential information such as the shop name, description,
+ * location, currency, and resource region.
+ *
+ * Users can select from a predefined list of countries, currencies, and regions, ensuring a seamless
+ * setup process. Once the form is completed, users can submit their information to create the shop,
+ * with a visual globe component displaying the selected region.
+ *
+ * @returns {JSX.Element} The Shop Setup page layout.
+ */
 const ShopSetupPage = () => {
   const [formData, setFormData] = useState({
     shopName: '',

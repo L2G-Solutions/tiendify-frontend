@@ -4,7 +4,7 @@ const DOCK_PATHS = {
   '': '',
   docs: 'docs/intro',
   blog: 'blog',
-  infraestructure: 'docs/infrastructure',
+  infrastructure: 'docs/infrastructure',
   auth: 'store-api/authentication',
   adminAuth: 'docs/store-api/admin%20access',
   apiReference: 'api-reference',

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import useCurentUrl from '@/hooks/useCurentUrl';
+import useCurrentUrl from '@/hooks/useCurrentUrl';
 import {
   Navbar,
   NavbarBrand,
@@ -31,7 +31,7 @@ const NAVBAR_LINKS = [
   { name: 'About', href: '/', withLogin: false, withLogout: true },
   { name: 'Dashboard', href: '/dashboard', withLogin: true, withLogout: false },
   { name: 'Docs', href: getDocUrl('docs'), withLogin: true, withLogout: true },
-  { name: 'Infrastructure', href: getDocUrl('infraestructure'), withLogin: true, withLogout: true },
+  { name: 'Infrastructure', href: getDocUrl('infrastructure'), withLogin: true, withLogout: true },
   { name: 'Sign In', href: '', withLogin: false, withLogout: true },
 ];
 
@@ -40,7 +40,7 @@ const NavBar = () => {
 
   const { status, userData, logout } = useAuth();
 
-  const { domainUrl } = useCurentUrl();
+  const { domainUrl } = useCurrentUrl();
   const LOGIN_REDIRECT_URL = `${domainUrl}/auth/authorize`;
   const LOGIN_URL = `${process.env.NEXT_PUBLIC_SHOP_MANAGEMENT_API_URL}/auth/public/login?redirect_uri=${LOGIN_REDIRECT_URL}`;
 

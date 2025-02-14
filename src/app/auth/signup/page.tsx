@@ -6,6 +6,14 @@ import { useMutation } from 'react-query';
 import { signup } from '@/service/auth';
 import { toast } from 'sonner';
 
+/**
+ * This component renders the Sign-Up page, allowing users to create a new account.
+ * It includes form fields for user credentials and personal details, and handles authentication
+ * using a React Query mutation.
+ *
+ * @component
+ * @returns {JSX.Element} The Sign-Up page layout.
+ */
 export default function SignUpPage() {
   const [form, setForm] = useState({
     username: '',

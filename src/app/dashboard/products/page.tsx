@@ -11,6 +11,14 @@ import { twMerge } from 'tailwind-merge';
 
 const PAGE_SIZE = 12;
 
+/**
+ * Displays a paginated and searchable list of shop products with filter and layout options.
+ * The options include a grid or list layout, a search bar, and a filter menu.
+ * Also for each product, a card is displayed with the product image, name, price, stock, and the
+ * possibility make actions like edit, delete, or view details.
+ *
+ * @returns {JSX.Element} The products page layout.
+ */
 const DashboardProducts = () => {
   const router = useRouter();
   const searchParams = useSearchParams();

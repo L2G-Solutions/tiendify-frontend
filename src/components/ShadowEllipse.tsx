@@ -2,7 +2,7 @@
 import { useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface IShadowElipseProps {
+interface IShadowEllipseProps {
   size: number | string;
   internalColor: string;
   externalColor: string;
@@ -11,14 +11,14 @@ interface IShadowElipseProps {
   className?: string;
 }
 
-const ShadowElipse = ({
+const ShadowEllipse = ({
   size,
   className,
   internalColor,
   externalColor,
   internalStopColor,
   externalStopColor,
-}: IShadowElipseProps) => {
+}: IShadowEllipseProps) => {
   const filterId = useId();
   const gradientId = useId();
   const effectBlurId = useId();
@@ -70,4 +70,4 @@ const ShadowElipse = ({
   );
 };
 
-export default ShadowElipse;
+export default ShadowEllipse;

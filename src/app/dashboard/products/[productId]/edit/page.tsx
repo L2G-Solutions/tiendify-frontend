@@ -12,8 +12,17 @@ interface IProductEditPageProps {
   };
 }
 
-// TODO: Implement product update mutation
+/**
+ * This page enables users to edit an existing product details. It fetches the product data
+ *  and displays it in a form. Users can update the product information, and upon submission.
+ * Success or error messages are shown based on the outcome, with a loading spinner displayed
+ * while fetching the data.
+ *
+ * @param {IProductEditPageProps} params - Contains the product ID to fetch the product details.
+ * @returns {JSX.Element} The rendered UI for editing a product.
+ */
 const ProductEditPage = ({ params }: IProductEditPageProps) => {
+  // TODO: Implement product update mutation
   const router = useRouter();
   const {
     data: originalProduct,
